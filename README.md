@@ -6,6 +6,7 @@
     
 #### Server
     config .env
+    pip3 install pymongo
     python3 server.py
     
 #### Client

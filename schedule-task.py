@@ -1,24 +1,14 @@
 import sched
 import time
-from masterclient import assign_task
-
-data_tasks = [
-    {
-        "id": "100003803082906_1509228895880532",
-        "type": "fb",
-        "loop": ['16:41']
-    },
-    {
-        "id": "BqkRJwMFtMb",
-        "type": "ins",
-        "loop": ['16:42']
-    }
-]
-
+# from Background.masterclient import assign_task
+from CrawlerLib.Pymongo import connect_mongo
+client = connect_mongo()
+data_tasks = client['crawler'].links.find()
 
 def job(data):
-    assign_task(data)
+    # assign_task(data)
     print(data)
+
 
 hours = int(time.strftime('%H'))
 minus = int(time.strftime('%M'))
