@@ -7,7 +7,7 @@ import time
 class ClientSocket:
     def __init__(self):
         client = create_client(ServerConfig.IP_ADDRESS.value, ServerConfig.PORT.value)
-        _send(client, {"action": "subscribe"})
+        _send(client, {"action": "subscribe", "type": ServerConfig.CLIENT_TYPE.value})
         self.client = client
 
     def listen(self):

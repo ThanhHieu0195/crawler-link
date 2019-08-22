@@ -5,7 +5,7 @@ from Configs.enum import ServerConfig
 
 class ServerSocket:
     def __init__(self):
-        self.server = create_server(ServerConfig.IP_ADDRESS.value, ServerConfig.PORT.value, ServerConfig.NUMCLIENT.value)
+        self.server = create_server(ServerConfig.IP_ADDRESS.value, ServerConfig.PORT.value, ServerConfig.NUM_CLIENT.value)
         self.clients = {
             "fb": [],
             "ins": [],
@@ -23,6 +23,7 @@ class ServerSocket:
 
     def task_subscribe(self, client_address, connection, data):
         print("subscribe by " + client_address[0])
+        print(data)
         self.clients[data['type']].append({
             "addr": client_address[0],
             "cnn": connection
