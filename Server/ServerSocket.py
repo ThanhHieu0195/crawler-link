@@ -17,18 +17,22 @@ class ServerSocket:
             connection, client_address = self.server.accept()
             data = _recev(connection)
             if data['action'] == 'subscribe':
-                print("subscribe by " + client_address[0])
-                ipaddress = client_address[0]
-                self.clients[data['type']].append({
-                    "addr": ipaddress,
-                    "cnn": connection
-                })
-                _send(connection, {"action": "msg", "msg": "ok"})
+                self.task_subscribe(client_address, connection, data)
             elif data['action'] == 'assign':
-                params = data['params']
-                client = self.get_client(params)
-                _send(client['cnn'], params)
-                print('assign task for ' + client['addr'])
+                self.task_asign(data['params'])
+
+    def task_subscribe(self, client_address, connection, data):
+        print("subscribe by " + client_address[0])
+        self.clients[data['type']].append({
+            "addr": client_address[0],
+            "cnn": connection
+        })
+        _send(connection, {"action": "msg", "msg": "ok"})
+
+    def task_asign(self, params):
+        client = self.get_client(params)
+        _send(client['cnn'], params)
+        print('assign task for ' + client['addr'])
 
     def get_client(self, params):
         clients = self.clients[params['type']]
