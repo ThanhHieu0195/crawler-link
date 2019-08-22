@@ -3,9 +3,10 @@ from CrawlerLib.socketjson import _recev, _send
 from Configs.enum import ServerConfig
 import time
 
-class ClientSocket():
+
+class ClientSocket:
     def __init__(self):
-        client = create_client(ServerConfig.IPADDRESS.value, ServerConfig.PORT.value)
+        client = create_client(ServerConfig.IP_ADDRESS.value, ServerConfig.PORT.value)
         _send(client, {"action": "subscribe"})
         self.client = client
 
