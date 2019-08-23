@@ -1,6 +1,7 @@
 from CrawlerLib.server import get_master_option
 from Facade.DetectLink.Plugin.ILink import ILink
 from Configs.constant import FACEBOOK_TOKEN
+import requests
 
 
 class FacebookLink(ILink):
@@ -15,8 +16,15 @@ class FacebookLink(ILink):
         token = self.__get_token()
         if token is None:
             return None
-        data['token'] = token
+        data['params']['token'] = token['key']
         return data
+
+    def process_request(self, data):
+        url = 'https://graph.facebook.com/' + data[
+            'link_id'] + '?fields=reactions.summary(true),comments.summary(true),shares,likes&access_token=' + data[
+                  'token']
+        print(url)
+        return requests.get(url)
 
     def process_response(self, result):
         return True

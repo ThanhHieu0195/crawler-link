@@ -11,5 +11,8 @@ class ILink(ABC):
     def format_request(self, data):
         pass
 
+    def process_request(self, data):
+        pass
+
     def process_response(self, result):
         pass

@@ -1,5 +1,6 @@
 from Configs.enum import ServerConfig
 from CrawlerLib.server import create_server, get_master_option
+from CrawlerLib.show_notify import show_warning, show_info
 from CrawlerLib.socketjson import _recev, _send
 from Facade.DetectLink.DetectLink import DetectLink
 
@@ -25,21 +26,29 @@ class ServerSocket:
                     if data['action'] == 'subscribe':
                         self.task_subscribe(client_address, connection, data)
                     elif data['action'] == 'assign':
-                        self.task_assign(data['params'])
-                        print(data)
+                        result = self.task_assign(data['params'])
+                        if result['error'] is False:
+                            self.__notify_success(result['msg'])
+                        else:
+                            self.__notify_error(result['msg'])
+
                         _send(connection, {"action": "notify", "type": "success", "ref": "assign"})
 
                         while True:
                             data = _recev(connection)
                             if 'action' in data and data['action'] == 'assign':
-                                self.task_assign(data['params'])
+                                result = self.task_assign(data['params'])
+                                if result['error'] is False:
+                                    self.__notify_success(result['msg'])
+                                else:
+                                    self.__notify_error(result['msg'])
                                 _send(connection, {"action": "notify", "type": "success", "ref": "assign"})
                             else:
                                 _send(connection, {"action": "notify", "type": "fail", "ref": "assign"})
                 else:
                     self.__notify_error('format data error')
             except:
-                print('Error')
+                self.__notify_error('Error waiting ... ')
 
     def task_subscribe(self, client_address, connection, data):
         self.__notify_success(client_address[0] + " was subscribed")
@@ -52,26 +61,30 @@ class ServerSocket:
         _send(connection, {"action": "notify", "type": "success", "ref": "subscribed"})
 
     def task_assign(self, params):
+        result = {'error': True, 'msg': ''}
         client = self.get_client(params)
         if client is None:
-            self.__notify_error('Not empty client subscribe')
-
-        data = self.detectLinkProvider.process_request(params['type'], {
+            result['msg'] = 'Not empty client subscribe'
+            return result
+        data = self.detectLinkProvider.format_request(params['type'], {
             'action': 'assign',
             'params': params
         })
         if data is not None:
             _send(client['cnn'], data)
-            self.__notify_success('assign task for ' + client['addr'])
+            result['error'] = False
+            result['msg'] = 'Run assign task - ' + params['link_id']
         else:
-            self.__notify_error('Type task not support')
+            result['msg'] = 'Type task not support'
+            return result
+        return result
 
     def get_client(self, params):
         clients = self.clients[params['type']]
         return get_master_option(clients)
 
     def __notify_error(self, msg):
-        print(msg)
+        show_warning(msg)
 
     def __notify_success(self, msg):
-        print(msg)
+        show_info(msg)
