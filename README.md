@@ -16,3 +16,6 @@
 #### Schedule
     crontab -e
     30 2 * * * python3 /path-source/schedule-task.py # run schedular 2:30am
+    
+#### Command 
+    - Generate fake data link: python3 command.py --run=fake-link

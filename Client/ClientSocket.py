@@ -1,7 +1,6 @@
 from CrawlerLib.client import create_client
 from CrawlerLib.socketjson import _recev, _send
 from Configs.enum import ServerConfig
-import time
 
 
 class ClientSocket:
@@ -13,5 +12,12 @@ class ClientSocket:
     def listen(self):
         while True:
             data = _recev(self.client)
-            print(data)
-            time.sleep(1)
+            if "action" in data:
+                if data['action'] == 'notify' and data['ref'] == 'subscribed':
+                    print("subscribe was successfully")
+
+                if data['action'] == 'assign':
+                    self.do_assign(data)
+
+    def do_assign(self, data):
+        print(data)
