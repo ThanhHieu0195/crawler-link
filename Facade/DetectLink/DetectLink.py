@@ -1,4 +1,5 @@
 from Facade.DetectLink.Plugin.FacebookLink import FacebookLink
+from Facade.DetectLink.Plugin.InstagramLink import InstagramLink
 
 
 class DetectLink:
@@ -6,7 +7,8 @@ class DetectLink:
 
     def __init__(self):
         self.__plugins = {
-            FacebookLink.get_name(): FacebookLink()
+            FacebookLink.get_name(): FacebookLink(),
+            InstagramLink.get_name(): InstagramLink(),
         }
 
     @staticmethod

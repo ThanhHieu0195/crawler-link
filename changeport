@@ -8,7 +8,7 @@ echo "TYPE=fb
 IP_ADDRESS=localhost
 PORT=$port
 NUM_CLIENT=10
-CLIENT_TYPE=fb
+CLIENT_TYPE=ins
 MONGO_HOST=localhost
 MONGO_DATABASE=crawler" >> /home/hieutct/syn/crawler-link/.env
 

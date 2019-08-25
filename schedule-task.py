@@ -34,6 +34,6 @@ def job(data):
 # s.run()
 
 job({
-    'link_id': '100003803082906_1509228895880532',
-    'type': 'fb'
+    'link_id': 'BqkRJwMFtMb',
+    'type': 'ins'
 })
