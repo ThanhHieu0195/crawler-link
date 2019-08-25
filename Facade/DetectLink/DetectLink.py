@@ -2,10 +2,18 @@ from Facade.DetectLink.Plugin.FacebookLink import FacebookLink
 
 
 class DetectLink:
+    Main = None
+
     def __init__(self):
         self.__plugins = {
             FacebookLink.get_name(): FacebookLink()
         }
+
+    @staticmethod
+    def get_instance():
+        if DetectLink.Main is None:
+            DetectLink.Main = DetectLink()
+        return DetectLink.Main
 
     def format_request(self, type_link, data):
         if type_link not in self.__plugins:

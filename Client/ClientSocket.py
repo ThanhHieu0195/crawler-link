@@ -23,4 +23,6 @@ class ClientSocket:
 
     def do_assign(self, data):
         res = self.detectLinkProvider.process_request(data['type'], data)
+        res['action'] = 'detect-link'
         print(res)
+        _send(self.client, res)

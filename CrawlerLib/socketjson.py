@@ -11,7 +11,8 @@ def _send(socket, data):
 
 def _recev(socket):
     try:
-        data = json.loads(socket.recv(10240))
+        msg = socket.recv(10240)
+        data = json.loads(msg.decode())
     except:
         data = {}
     return data

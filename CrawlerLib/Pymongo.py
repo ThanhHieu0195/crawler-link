@@ -32,3 +32,6 @@ class MongodbClient:
 
     def get_link_collection(self):
         return self.get_collection('links')
+
+    def get_link_history_collection(self):
+        return self.get_collection('link_histories')

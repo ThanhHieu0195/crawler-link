@@ -17,8 +17,9 @@ def get_master_option(options):
             if o['status'] is True:
                 if current is None:
                     current = o
-                elif o['amount'] > current['amount']:
+                elif o['amount'] < current['amount']:
                     current = o
         if current is not None:
+            current['amount'] += 1
             return current
     return None

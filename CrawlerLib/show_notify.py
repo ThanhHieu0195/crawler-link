@@ -23,3 +23,6 @@ def show_warning(msg):
 
 def show_info(msg):
     print(style.BLUE(msg) + style.RESET(""))
+
+def show_debug(msg):
+    print(style.YELLOW(msg) + style.RESET(""))
