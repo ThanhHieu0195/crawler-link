@@ -1,0 +1,28 @@
+# /bin/bash
+
+# ubuntu 1
+#sudo chown -R hieutct:hieutct /home/hieutct/docker/crawler-link/
+#sudo rm -rf /home/hieutct/docker/crawler-link/.env
+#port=$(date +"%I%S")
+#echo "TYPE=ytb
+#IP_ADDRESS=localhost
+#PORT=$port
+#NUM_CLIENT=10
+#CLIENT_TYPE=ytb
+#API_YTB_KEY=AIzaSyDNli7U6XFRiBCIxClMRPkObGvrm9Fxc6c
+#MONGO_HOST=192.168.1.80
+#MONGO_DATABASE=crawler" >> /home/hieutct/docker/crawler-link/.env
+
+# ubuntu 2
+sudo chown -R hieutct:hieutct /home/hieutct/syn/crawler-link
+sudo rm -rf /home/hieutct/syn/crawler-link/.env
+port=$(date +"%I%S")
+echo "TYPE=ytb
+IP_ADDRESS=localhost
+PORT=$port
+NUM_CLIENT=10
+CLIENT_TYPE=ytb
+API_YTB_KEY=AIzaSyDNli7U6XFRiBCIxClMRPkObGvrm9Fxc6c
+MONGO_HOST=localhost
+MONGO_DATABASE=crawler" >> /home/hieutct/syn/crawler-link/.env
+

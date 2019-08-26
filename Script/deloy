@@ -1,0 +1,26 @@
+# /bin/bash
+
+# ubuntu1
+sudo chown -R hieutct:hieutct /home/hieutct/syn/crawler-link/
+sudo rm -rf /home/hieutct/syn/crawler-link/.env
+sudo rm -rf /home/hieutct/docker/ubuntu/crawler-link
+
+sudo cp -r /home/hieutct/syn/crawler-link /home/hieutct/docker/ubuntu/crawler-link
+sudo chown -R hieutct:hieutct /home/hieutct/docker/ubuntu/crawler-link
+port=$(date +"%I%S")
+echo "TYPE=fb
+IP_ADDRESS=172.17.0.1
+PORT=$port
+NUM_CLIENT=10
+CLIENT_TYPE=fb
+MONGO_HOST=172.17.0.1
+MONGO_DATABASE=crawler" >> /home/hieutct/docker/ubuntu/crawler-link/.env
+
+echo "TYPE=fb
+IP_ADDRESS=172.17.0.1
+PORT=$port
+NUM_CLIENT=10
+CLIENT_TYPE=fb
+MONGO_HOST=172.17.0.1
+MONGO_DATABASE=crawler" >> /home/hieutct/syn/crawler-link/.env
+

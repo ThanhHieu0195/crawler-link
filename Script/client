@@ -1,0 +1,14 @@
+#! /bin/bash
+
+while getopts "h:t:n" opt
+do
+    case "$opt" in
+        n ) log="$OPTARG";;
+        t ) type="$OPTARG";;
+    esac
+done
+echo $log
+echo $type
+#sudo python3.5 client.py type=${type} log_name=${name_log}
+
+

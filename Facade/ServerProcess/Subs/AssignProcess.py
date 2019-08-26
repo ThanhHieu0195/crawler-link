@@ -64,7 +64,7 @@ class AssignProcess(ISubProcess):
             show_warning(r['msg'])
 
     def __task_assign(self, params):
-        print('Task assign running - %s' % params['link_id'])
+        show_info('Task assign running - %s' % params['link_id'])
         client = self.__get_client(params)
         proxy = self.__get_proxy()
         if proxy:

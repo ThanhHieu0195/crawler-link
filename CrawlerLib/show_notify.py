@@ -1,4 +1,6 @@
 import os, sys
+import logging
+from CrawlerLib.helper import get_sys_params, get_master_attr
 
 if sys.platform.lower() == "win32":
     os.system('color')
@@ -17,12 +19,30 @@ class style():
     RESET = lambda x: '\033[0m' + str(x)
 
 
+params = get_sys_params()
+log_name = get_master_attr('log_name', params, 'log.log')
+path_log='%s/Log/%s' % (os.getcwd(), log_name)
+print(path_log)
+logging.basicConfig(filename=path_log, level=logging.DEBUG)
+
 def show_warning(msg):
-    print(style.RED(msg) + style.RESET(""))
+    if 'debug' in params:
+        print(style.BLUE(msg) + style.RESET(""))
+    else:
+        print('[Error] %s' % msg)
+        logging.warning(msg)
 
 
 def show_info(msg):
-    print(style.BLUE(msg) + style.RESET(""))
+    if 'debug' in params:
+        print(style.BLUE(msg) + style.RESET(""))
+    else:
+        print('[Notify] %s' % msg)
+        logging.info(msg)
 
 def show_debug(msg):
-    print(style.YELLOW(msg) + style.RESET(""))
+    if 'debug' in params:
+        print(style.YELLOW(msg) + style.RESET(""))
+    else:
+        print('[Debug]: %s' % msg)
+        logging.debug(msg)
