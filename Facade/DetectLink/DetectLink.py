@@ -40,3 +40,9 @@ class DetectLink:
             return None
         p = self.__plugins[type_link]
         return p.process_response(response)
+
+    def process_response_error(self, type_link, params, response):
+        if type_link not in self.__plugins:
+            return None
+        p = self.__plugins[type_link]
+        return p.process_response_error(params, response)

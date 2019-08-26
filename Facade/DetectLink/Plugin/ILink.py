@@ -16,3 +16,6 @@ class ILink(ABC):
 
     def process_response(self, result):
         pass
+
+    def process_response_error(self, params, response):
+        pass

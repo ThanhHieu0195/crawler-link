@@ -19,14 +19,24 @@ class ClientSocket:
 
     def listen(self):
         while True:
-            data = _recev(self.client)
-            if "action" in data:
-                if data['action'] == 'notify' and data['ref'] == 'subscribed':
-                    print("subscribe was successfully")
+            try:
+                data = _recev(self.client)
+                if "action" in data:
+                    if data['action'] == 'notify' and data['ref'] == 'subscribed':
+                        print("subscribe was successfully")
 
-                if data['action'] == 'assign':
-                    show_debug('Receiver assign task with link %s' % get_master_attr('params.link_id', data, None))
-                    self.do_assign(data['params'])
+                    if data['action'] == 'assign':
+                        print('\n\n')
+                        show_debug('Receiver assign task with link %s' % get_master_attr('params.link_id', data, None))
+                        self.do_assign(data['params'])
+
+                    if data['action'] == 'live':
+                        _send(self.client, {
+                            'action': 'live',
+                            'status': True
+                        })
+            except ConnectionError as err:
+                print("OS error: {0}".format(err))
 
     def do_assign(self, data):
         res = self.detectLinkProvider.process_request(data['type'], data)

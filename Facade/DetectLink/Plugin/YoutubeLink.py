@@ -40,20 +40,26 @@ class YoutubeLink(ILink):
             }
             s.proxies = proxies
 
-        response = s.get(url)
-        d = response.json()
+        try:
+            response = s.get(url)
+        except ConnectionError as err:
+            print('Error %s' % format(err))
+        except:
+            print('12312312312312312')
+        else:
+            d = response.json()
 
-        if 'error' not in d:
-            result['error'] = False
-            result['data'] = {
-                'link_id': data['link_id'],
-                'dislikes': get_master_attr('items.0.statistics.likeCount', d, None),
-                'likes': get_master_attr('items.0.statistics.dislikeCount', d, None),
-                'views': get_master_attr('items.0.statistics.viewCount', d, None),
-                'comments': get_master_attr('items.0.statistics.commentCount', d, None),
-                'created_time': None,
-                'process_time': time.time()
-            }
+            if 'error' not in d:
+                result['error'] = False
+                result['data'] = {
+                    'link_id': data['link_id'],
+                    'dislikes': get_master_attr('items.0.statistics.likeCount', d, None),
+                    'likes': get_master_attr('items.0.statistics.dislikeCount', d, None),
+                    'views': get_master_attr('items.0.statistics.viewCount', d, None),
+                    'comments': get_master_attr('items.0.statistics.commentCount', d, None),
+                    'created_time': None,
+                    'process_time': time.time()
+                }
         return result
 
     def process_response(self, result):
@@ -80,4 +86,7 @@ class YoutubeLink(ILink):
                 return 1
             return 0
         return -1
+
+    def process_response_error(self, params, data):
+        return None
 

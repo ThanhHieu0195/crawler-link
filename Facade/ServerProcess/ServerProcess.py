@@ -25,9 +25,7 @@ class ServerProcess:
         self.connection = connection
         self.clients = clients
         self.proxies = proxies
-        proxy = get_master_option(proxies)
-        if proxy and 'params' in data:
-            data['params']['proxy'] = proxy['proxy']
+
         if 'action' in data and data['action'] in self.subs:
             return self.subs[data['action']].process_sub(self, data)
         return -1

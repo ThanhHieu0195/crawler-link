@@ -2,7 +2,7 @@ import pprint
 
 from CrawlerLib.Pymongo import MongodbClient
 from CrawlerLib.helper import get_master_attr
-from CrawlerLib.show_notify import show_debug
+from CrawlerLib.show_notify import show_debug, show_warning
 from Facade.DetectLink.Plugin.ILink import ILink
 import requests
 import json
@@ -40,22 +40,25 @@ class InstagramLink(ILink):
             }
             s.proxies = proxies
 
-        response = s.get(url)
-
-        html = response.text
-        regex = r"window._sharedData = {(.*)};</script>"
-        matches = re.findall(regex, html, re.DOTALL)
-        if matches:
-            d = json.loads('{'+matches[0]+'}')
-            result['error'] = False
-            print(d)
-            result['data'] = {
-                'link_id': data['link_id'],
-                'likes': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.edge_media_preview_like.count', d, None),
-                'comments': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.edge_media_preview_comment.count', d, None),
-                'created_time': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.taken_at_timestamp', d, None),
-                'process_time': time.time()
-            }
+        try:
+            response = s.get(url, timeout=3)
+        except requests.ConnectionError as err:
+            result['type'] = 'requests'
+            result['msg'] = str(err)
+        else:
+            html = response.text
+            regex = r"window._sharedData = {(.*)};</script>"
+            matches = re.findall(regex, html, re.DOTALL)
+            if matches:
+                d = json.loads('{'+matches[0]+'}')
+                result['error'] = False
+                result['data'] = {
+                    'link_id': data['link_id'],
+                    'likes': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.edge_media_preview_like.count', d, None),
+                    'comments': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.edge_media_preview_comment.count', d, None),
+                    'created_time': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.taken_at_timestamp', d, None),
+                    'process_time': time.time()
+                }
         return result
 
     def process_response(self, result):
@@ -81,3 +84,14 @@ class InstagramLink(ILink):
             return 0
         return -1
 
+    def process_response_error(self, params, data):
+        if data['type'] == 'requests':
+            if 'proxy' in params:
+                del params['proxy']
+            return {
+                'params': params,
+                'reassign': True,
+                'change_proxy': True,
+                'remove_proxy': True
+            }
+        return None

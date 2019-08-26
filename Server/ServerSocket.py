@@ -4,6 +4,7 @@ from CrawlerLib.show_notify import show_warning, show_info, show_debug
 from CrawlerLib.socketjson import _recev, _send
 from Facade.ServerProcess.ServerProcess import ServerProcess
 from Configs.constant import PROXIES
+import pprint
 
 
 class ServerSocket:
@@ -25,10 +26,11 @@ class ServerSocket:
                 result = self.serverProcess.process_sub(client_address, connection, self.clients, self.proxies, data)
                 if result == -1:
                     _send(connection, {"action": "notify", "type": "fail", "ref": "undefined"})
-            except NameError:
-                print(NameError)
-            except:
-                show_warning('Error waiting ... ')
+            except BrokenPipeError:
+                pass
+            except Exception as e:
+                show_warning('ERROR')
+                print(str(e))
 
     @staticmethod
     def init_proxies():

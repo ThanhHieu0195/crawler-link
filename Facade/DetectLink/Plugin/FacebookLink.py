@@ -89,6 +89,9 @@ class FacebookLink(ILink):
             return 0
         return -1
 
+    def process_response_error(self, data):
+        return None
+
     def __init_tokens(self):
         self.tokens = []
         for t in FACEBOOK_TOKEN:
