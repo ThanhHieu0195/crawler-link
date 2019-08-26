@@ -30,7 +30,17 @@ class InstagramLink(ILink):
         }
         url = 'https://www.instagram.com/p/' + data[
             'link_id']
-        response = requests.get(url)
+
+        proxy = get_master_attr('proxy', data, None)
+        s = requests.Session()
+        if proxy:
+            proxies = {
+                "https": proxy,
+                "http": proxy
+            }
+            s.proxies = proxies
+
+        response = s.get(url)
 
         html = response.text
         regex = r"window._sharedData = {(.*)};</script>"

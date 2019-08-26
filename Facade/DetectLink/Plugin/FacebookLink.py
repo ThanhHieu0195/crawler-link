@@ -1,6 +1,7 @@
 import pprint
 
 from CrawlerLib.Pymongo import MongodbClient
+from CrawlerLib.helper import get_master_attr
 from CrawlerLib.server import get_master_option
 from CrawlerLib.show_notify import show_debug
 from Facade.DetectLink.Plugin.ILink import ILink
@@ -35,7 +36,15 @@ class FacebookLink(ILink):
         url = 'https://graph.facebook.com/' + data[
             'link_id'] + '?fields=reactions.summary(true),comments.summary(true),shares,likes&access_token=' + data[
                   'token']
-        response = requests.get(url)
+        proxy = get_master_attr('proxy', data, None)
+        s = requests.Session()
+        if proxy:
+            proxies = {
+                "https": proxy,
+                "http": proxy
+            }
+            s.proxies = proxies
+        response = s.get(url)
         if response:
             d = response.json()
             result['error'] = False

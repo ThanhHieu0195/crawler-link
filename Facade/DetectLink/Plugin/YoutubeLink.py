@@ -30,12 +30,21 @@ class YoutubeLink(ILink):
             'ref': YoutubeLink.get_name()
         }
         url = 'https://www.googleapis.com/youtube/v3/videos?part=statistics&id=%s&key=%s' % (data['link_id'], ServerConfig.API_YTB_KEY.value)
-        response = requests.get(url)
+
+        proxy = get_master_attr('proxy', data, None)
+        s = requests.Session()
+        if proxy:
+            proxies = {
+                "https": proxy,
+                "http": proxy
+            }
+            s.proxies = proxies
+
+        response = s.get(url)
         d = response.json()
 
         if 'error' not in d:
             result['error'] = False
-            print(d)
             result['data'] = {
                 'link_id': data['link_id'],
                 'dislikes': get_master_attr('items.0.statistics.likeCount', d, None),
