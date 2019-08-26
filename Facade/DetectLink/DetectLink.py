@@ -1,5 +1,7 @@
+from Facade.DetectLink.Plugin import YoutubeLink
 from Facade.DetectLink.Plugin.FacebookLink import FacebookLink
 from Facade.DetectLink.Plugin.InstagramLink import InstagramLink
+from Facade.DetectLink.Plugin.YoutubeLink import YoutubeLink
 
 
 class DetectLink:
@@ -9,6 +11,7 @@ class DetectLink:
         self.__plugins = {
             FacebookLink.get_name(): FacebookLink(),
             InstagramLink.get_name(): InstagramLink(),
+            YoutubeLink.get_name(): YoutubeLink(),
         }
 
     @staticmethod

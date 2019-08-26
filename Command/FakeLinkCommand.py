@@ -39,6 +39,20 @@ class FakeLinkCommand(ICommand):
                     datetime.fromtimestamp(time.time() + 60 * 12).strftime('%H:%M'),
                     datetime.fromtimestamp(time.time() + 60 * 14).strftime('%H:%M')
                 ]
+            },
+            {
+                "link_id": "j8U06veqxdU",
+                "type": "ytb",
+                "loop": [
+                    datetime.fromtimestamp(time.time() + 60 * 0).strftime('%H:%M'),
+                    datetime.fromtimestamp(time.time() + 60 * 2).strftime('%H:%M'),
+                    datetime.fromtimestamp(time.time() + 60 * 4).strftime('%H:%M'),
+                    datetime.fromtimestamp(time.time() + 60 * 6).strftime('%H:%M'),
+                    datetime.fromtimestamp(time.time() + 60 * 8).strftime('%H:%M'),
+                    datetime.fromtimestamp(time.time() + 60 * 10).strftime('%H:%M'),
+                    datetime.fromtimestamp(time.time() + 60 * 12).strftime('%H:%M'),
+                    datetime.fromtimestamp(time.time() + 60 * 14).strftime('%H:%M')
+                ]
             }
         ]
         result = []

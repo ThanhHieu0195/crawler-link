@@ -1,5 +1,6 @@
 import pprint
 
+from Configs.enum import ServerConfig
 from CrawlerLib.Pymongo import MongodbClient
 from CrawlerLib.helper import get_master_attr
 from CrawlerLib.show_notify import show_debug
@@ -10,13 +11,13 @@ import re
 import time
 
 
-class InstagramLink(ILink):
+class YoutubeLink(ILink):
     def __init__(self):
         self.mongodb = MongodbClient.get_instance()
 
     @staticmethod
     def get_name():
-        return 'ins'
+        return 'ytb'
 
     def format_request(self, data):
         return data
@@ -26,24 +27,22 @@ class InstagramLink(ILink):
             'error': True,
             'msg': None,
             'data': None,
-            'ref': 'ins'
+            'ref': YoutubeLink.get_name()
         }
-        url = 'https://www.instagram.com/p/' + data[
-            'link_id']
+        url = 'https://www.googleapis.com/youtube/v3/videos?part=statistics&id=%s&key=%s' % (data['link_id'], ServerConfig.API_YTB_KEY.value)
         response = requests.get(url)
+        d = response.json()
 
-        html = response.text
-        regex = r"window._sharedData = {(.*)};</script>"
-        matches = re.findall(regex, html, re.DOTALL)
-        if matches:
-            d = json.loads('{'+matches[0]+'}')
+        if 'error' not in d:
             result['error'] = False
             print(d)
             result['data'] = {
                 'link_id': data['link_id'],
-                'likes': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.edge_media_preview_like.count', d, None),
-                'comments': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.edge_media_preview_comment.count', d, None),
-                'created_time': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.taken_at_timestamp', d, None),
+                'dislikes': get_master_attr('items.0.statistics.likeCount', d, None),
+                'likes': get_master_attr('items.0.statistics.dislikeCount', d, None),
+                'views': get_master_attr('items.0.statistics.viewCount', d, None),
+                'comments': get_master_attr('items.0.statistics.commentCount', d, None),
+                'created_time': None,
                 'process_time': time.time()
             }
         return result
@@ -56,6 +55,8 @@ class InstagramLink(ILink):
             item = {
                 'likes': result['data']['likes'],
                 'comments': result['data']['comments'],
+                'views': result['data']['views'],
+                'dislikes': result['data']['dislikes'],
                 'post_created_time': result['data']['created_time'],
                 'last_update': result['data']['process_time']
             }

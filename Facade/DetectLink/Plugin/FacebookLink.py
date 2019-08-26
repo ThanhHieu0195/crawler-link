@@ -1,7 +1,6 @@
 import pprint
 
 from CrawlerLib.Pymongo import MongodbClient
-from CrawlerLib.helper import nested_getattr
 from CrawlerLib.server import get_master_option
 from CrawlerLib.show_notify import show_debug
 from Facade.DetectLink.Plugin.ILink import ILink

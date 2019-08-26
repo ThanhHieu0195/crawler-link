@@ -22,7 +22,7 @@ class ServerSocket:
                 data = _recev(connection)
                 result = self.serverProcess.process_sub(client_address, connection, self.clients, data)
                 if result == -1:
-                    _send(connection, {"action": "notify", "type": "fail", "ref": "undefine"})
+                    _send(connection, {"action": "notify", "type": "fail", "ref": "undefined"})
             except NameError:
                 print(NameError)
             except:
