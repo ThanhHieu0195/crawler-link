@@ -1,3 +1,4 @@
+from CrawlerLib.show_notify import show_debug
 from Facade.DetectLink.Plugin import YoutubeLink
 from Facade.DetectLink.Plugin.FacebookLink import FacebookLink
 from Facade.DetectLink.Plugin.InstagramLink import InstagramLink
@@ -27,6 +28,8 @@ class DetectLink:
         return p.format_request(data)
 
     def process_request(self, type_link, data):
+        show_debug('processing with params ...')
+        print(data)
         if type_link not in self.__plugins:
             return None
         p = self.__plugins[type_link]

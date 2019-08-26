@@ -22,7 +22,6 @@ class ServerSocket:
             try:
                 connection, client_address = self.server.accept()
                 data = _recev(connection)
-
                 result = self.serverProcess.process_sub(client_address, connection, self.clients, self.proxies, data)
                 if result == -1:
                     _send(connection, {"action": "notify", "type": "fail", "ref": "undefined"})

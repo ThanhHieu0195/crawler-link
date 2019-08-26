@@ -1,13 +1,8 @@
-import sys
-
 from Command.Command import CommandBuilder
+from CrawlerLib.helper import get_sys_params
 
 commandBuilder = CommandBuilder()
-params = {}
-for argv in sys.argv:
-    a = str(argv).split('=')
-    if len(a) >= 2:
-        params[a[0]] = a[1]
+params = get_sys_params()
 if '--run' in params:
     c = commandBuilder.get_command(params['--run'])
     if c is not None:

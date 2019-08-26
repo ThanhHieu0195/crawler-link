@@ -1,5 +1,5 @@
 from CrawlerLib.server import get_master_option
-from CrawlerLib.show_notify import show_info, show_warning
+from CrawlerLib.show_notify import show_info, show_warning, show_debug
 from CrawlerLib.socketjson import _send, _recev
 from Facade.DetectLink.DetectLink import DetectLink
 from Facade.ServerProcess.Subs.ISubProcess import ISubProcess
@@ -25,6 +25,7 @@ class AssignProcess(ISubProcess):
             if 'action' in data and data['action'] == 'assign':
                 result = self.__task_assign(data['params'])
                 self.__process_data_result_task(connection, result)
+                _send(connection, {"action": "notify", "type": "success", "ref": "assign"})
             else:
                 _send(connection, {"action": "notify", "type": "fail", "ref": "assign"})
 
@@ -41,6 +42,7 @@ class AssignProcess(ISubProcess):
             show_warning(r['msg'])
 
     def __task_assign(self, params):
+        show_debug('server assigning task ...')
         result = {'error': True, 'msg': ''}
         client = self.__get_client(params)
         if client is None:
