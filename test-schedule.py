@@ -25,7 +25,7 @@ def job(data):
 #             'type': o['type']
 #         })
 
-job({'type': 'ytb', 'link_id': 'j8U06veqxdU'})
+# job({'type': 'ytb', 'link_id': 'j8U06veqxdU'})
 # job({'type': 'ins', 'link_id': 'BqkRJwMFtMb'})
 # job({'type': 'ins', 'link_id': 'BqkRJwMFtMb'})
 # job({'type': 'ins', 'link_id': 'BqkRJwMFtMb'})
@@ -35,3 +35,5 @@ job({'type': 'ytb', 'link_id': 'j8U06veqxdU'})
 # job({'type': 'ytb', 'link_id': 'j8U06veqxdU'})
 # job({'type': 'ytb', 'link_id': 'j8U06veqxdU'})
 # job({'type': 'ytb', 'link_id': 'j8U06veqxdU'})
+
+job({'type': 'fb', 'link_id': '100003803082906_1509228895880532'})

@@ -1,0 +1,33 @@
+=========================================
+Today: 27-08-2019 14:10
+starting up on localhost port 227
+[27-08-2019 14:02 Notify] 127.0.0.1 was subscribed with type fb
+=========================================
+Today: 27-08-2019 14:11
+starting up on localhost port 254
+[27-08-2019 14:02 Notify] 127.0.0.1 was subscribed with type fb
+[27-08-2019 14:02 Notify] Task assign running - 100003803082906_1509228895880532
+[27-08-2019 14:02 Error] ERROR
+process_response_error() takes 2 positional arguments but 3 were given
+=========================================
+Today: 27-08-2019 14:12
+starting up on localhost port 233
+[27-08-2019 14:02 Notify] 127.0.0.1 was subscribed with type fb
+[27-08-2019 14:02 Notify] Task assign running - 100003803082906_1509228895880532
+[27-08-2019 14:02 Error] ERROR
+process_response_error() takes 2 positional arguments but 3 were given
+=========================================
+Today: 27-08-2019 14:14
+starting up on localhost port 232
+[27-08-2019 14:02 Notify] 127.0.0.1 was subscribed with type fb
+[27-08-2019 14:02 Notify] Task assign running - 100003803082906_1509228895880532
+[27-08-2019 14:02 Error] ERROR
+process_response_error() takes 2 positional arguments but 3 were given
+=========================================
+Today: 27-08-2019 14:16
+starting up on localhost port 247
+[27-08-2019 14:02 Notify] 127.0.0.1 was subscribed with type fb
+[27-08-2019 14:02 Notify] Task assign running - 100003803082906_1509228895880532
+AAAAAAAAAAAAAAAAAAAA
+[27-08-2019 14:02 Error] ERROR
+process_response_error() takes 2 positional arguments but 3 were given

@@ -1,0 +1,39 @@
+=========================================
+Today: 27-08-2019 14:02
+[27-08-2019 14:02 Notify] subscribe was successfully
+=========================================
+Today: 27-08-2019 14:02
+[27-08-2019 14:02 Notify] subscribe was successfully
+== NEW TASK Assign ===
+[27-08-2019 14:02 Debug] Receiver assign task with link 100003803082906_1509228895880532
+[27-08-2019 14:02 Debug] processing with params ...
+{'type': 'fb', 'token': 'EAAAAAYsX7TsBAAZAwJjt6sdFDfbsJ7YlGGBdSXgWeobcWKZC9sqYpZBJGNPrs7rdRkBhuJgdqK6ZAiEpvyWQ3I3XPJ3QC4q3FEyVWDMTtkJoEB3NCmZBudBV4M1cKaFbL0DxT4bEXnQAw7JEEn3y8cnK68ZCK91N8ugDBMAyl67URLzaP7JOby', 'link_id': '100003803082906_1509228895880532'}
+[27-08-2019 14:02 Debug] Result response process request ...
+{'error': True, 'ref': 'fb', 'data.html': None, 'msg': 'Error validating access token: The user is enrolled in a blocking, logged-in checkpoint', 'action': 'detect-link'}
+=========================================
+Today: 27-08-2019 14:02
+[27-08-2019 14:02 Notify] subscribe was successfully
+== NEW TASK Assign ===
+[27-08-2019 14:02 Debug] Receiver assign task with link 100003803082906_1509228895880532
+[27-08-2019 14:02 Debug] processing with params ...
+{'type': 'fb', 'link_id': '100003803082906_1509228895880532', 'token': 'EAAAAAYsX7TsBAAZAwJjt6sdFDfbsJ7YlGGBdSXgWeobcWKZC9sqYpZBJGNPrs7rdRkBhuJgdqK6ZAiEpvyWQ3I3XPJ3QC4q3FEyVWDMTtkJoEB3NCmZBudBV4M1cKaFbL0DxT4bEXnQAw7JEEn3y8cnK68ZCK91N8ugDBMAyl67URLzaP7JOby'}
+[27-08-2019 14:02 Debug] Result response process request ...
+{'action': 'detect-link', 'ref': 'fb', 'msg': 'Error validating access token: The user is enrolled in a blocking, logged-in checkpoint', 'data.html': None, 'error': True}
+=========================================
+Today: 27-08-2019 14:02
+[27-08-2019 14:02 Notify] subscribe was successfully
+== NEW TASK Assign ===
+[27-08-2019 14:02 Debug] Receiver assign task with link 100003803082906_1509228895880532
+[27-08-2019 14:02 Debug] processing with params ...
+{'type': 'fb', 'link_id': '100003803082906_1509228895880532', 'token': 'EAAAAAYsX7TsBAAZAwJjt6sdFDfbsJ7YlGGBdSXgWeobcWKZC9sqYpZBJGNPrs7rdRkBhuJgdqK6ZAiEpvyWQ3I3XPJ3QC4q3FEyVWDMTtkJoEB3NCmZBudBV4M1cKaFbL0DxT4bEXnQAw7JEEn3y8cnK68ZCK91N8ugDBMAyl67URLzaP7JOby'}
+[27-08-2019 14:02 Debug] Result response process request ...
+{'error': True, 'msg': 'Error validating access token: The user is enrolled in a blocking, logged-in checkpoint', 'ref': 'fb', 'data.html': None, 'action': 'detect-link'}
+=========================================
+Today: 27-08-2019 14:02
+[27-08-2019 14:02 Notify] subscribe was successfully
+== NEW TASK Assign ===
+[27-08-2019 14:02 Debug] Receiver assign task with link 100003803082906_1509228895880532
+[27-08-2019 14:02 Debug] processing with params ...
+{'link_id': '100003803082906_1509228895880532', 'type': 'fb', 'token': 'EAAAAAYsX7TsBAAZAwJjt6sdFDfbsJ7YlGGBdSXgWeobcWKZC9sqYpZBJGNPrs7rdRkBhuJgdqK6ZAiEpvyWQ3I3XPJ3QC4q3FEyVWDMTtkJoEB3NCmZBudBV4M1cKaFbL0DxT4bEXnQAw7JEEn3y8cnK68ZCK91N8ugDBMAyl67URLzaP7JOby'}
+[27-08-2019 14:02 Debug] Result response process request ...
+{'data.html': None, 'action': 'detect-link', 'msg': 'Error validating access token: The user is enrolled in a blocking, logged-in checkpoint', 'error': True, 'ref': 'fb'}

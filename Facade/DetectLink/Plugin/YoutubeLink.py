@@ -103,6 +103,20 @@ class YoutubeLink(ILink):
         return -1
 
     def process_response_error(self, params, data):
+        if data['type'] == 'link_id':
+            link = self.mongodb.get_link_collection().find_one({'link_id': params['link_id']})
+            if link:
+                self.mongodb.get_link_collection().update_one({
+                    '_id': link['_id']
+                }, {
+                    '$set': {
+                        'status': 2,
+                        'error': {
+                            'message': 'not detach link id'
+                        }
+                    }
+                })
+
         if data['type'] == 'requests':
             if 'proxy' in params:
                 del params['proxy']
