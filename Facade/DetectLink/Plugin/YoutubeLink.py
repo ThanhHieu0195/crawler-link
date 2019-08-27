@@ -30,7 +30,6 @@ class YoutubeLink(ILink):
             'ref': YoutubeLink.get_name()
         }
         url = 'https://www.googleapis.com/youtube/v3/videos?part=statistics&id=%s&key=%s' % (data['link_id'], ServerConfig.API_YTB_KEY.value)
-
         proxy = get_master_attr('proxy', data, None)
         s = requests.Session()
         if proxy:
