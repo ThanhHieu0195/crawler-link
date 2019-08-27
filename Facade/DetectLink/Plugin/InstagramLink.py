@@ -41,7 +41,7 @@ class InstagramLink(ILink):
             s.proxies = proxies
 
         try:
-            response = s.get(url, timeout=3)
+            response = s.get(url, timeout=10)
         except requests.ConnectionError as err:
             result['type'] = 'requests'
             result['msg'] = str(err)
@@ -59,6 +59,9 @@ class InstagramLink(ILink):
                     'created_time': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.taken_at_timestamp', d, None),
                     'process_time': time.time()
                 }
+            else:
+                result['msg'] = 'Not detect link'
+                result['type'] = 'link_id'
         return result
 
     def process_response(self, result):
@@ -85,6 +88,20 @@ class InstagramLink(ILink):
         return -1
 
     def process_response_error(self, params, data):
+        if data['type'] == 'link_id':
+            link = self.mongodb.get_link_collection().find_one({'link_id': params['link_id']})
+            if link:
+                self.mongodb.get_link_collection().update_one({
+                    '_id': link['_id']
+                }, {
+                    '$set': {
+                        'status': 2,
+                        'error': {
+                            'message': 'not detach link id'
+                        }
+                    }
+                })
+
         if data['type'] == 'requests':
             if 'proxy' in params:
                 del params['proxy']

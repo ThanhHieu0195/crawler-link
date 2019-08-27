@@ -1,5 +1,7 @@
+from Configs.enum import ServerConfig
+from CrawlerLib.helper import get_master_attr
 from CrawlerLib.server import get_master_option
-from CrawlerLib.show_notify import show_info, show_warning, show_debug
+from CrawlerLib.show_notify import show_notify, show_warning, show_debug
 from CrawlerLib.socketjson import _send, _recev
 from Facade.DetectLink.DetectLink import DetectLink
 from Facade.ServerProcess.Subs.ISubProcess import ISubProcess
@@ -31,7 +33,7 @@ class AssignProcess(ISubProcess):
                 _send(connection, {"action": "notify", "type": "fail", "ref": "assign"})
 
     def process_response(self, client, proxy, data, response):
-        if 'error' not in response or response['error'] is False:
+        if response and get_master_attr('error', response, False) == False:
             self.detectLinkProvider.process_response(response['ref'], response)
             return {
                 'error': False,
@@ -43,7 +45,7 @@ class AssignProcess(ISubProcess):
             if result_error is None:
                 return {
                     'error': True,
-                    'msg': 'task process error'
+                    'msg': get_master_attr('msg', response, 'task process error')
                 }
 
             if 'reassign' in result_error and result_error['reassign']:
@@ -59,12 +61,12 @@ class AssignProcess(ISubProcess):
 
     def __process_data_result_task(self, r):
         if r['error'] is False:
-            show_info(r['msg'])
+            show_notify(r['msg'])
         else:
             show_warning(r['msg'])
 
     def __task_assign(self, params):
-        show_info('Task assign running - %s' % params['link_id'])
+        show_notify('Task assign running - %s' % params['link_id'])
         client = self.__get_client(params)
         proxy = self.__get_proxy()
         if proxy:
@@ -82,12 +84,15 @@ class AssignProcess(ISubProcess):
                 data['params']['proxy'] = proxy['proxy']
 
             if client is None:
-                result['msg'] = 'Client empty'
+                result['msg'] = 'Client empty with task %s' % data['params']['link_id']
                 return result
 
             _send(client['cnn'], data)
-            response = _recev(client['cnn'])
-            return self.process_response(client, proxy, data, response)
+            response = _recev(client['cnn'], None)
+            if response:
+                return self.process_response(client, proxy, data, response)
+            else:
+                result['msg'] = 'time out. Client not response'
         return result
 
     def __get_client(self, params):
@@ -121,7 +126,9 @@ class AssignProcess(ISubProcess):
             _send(client, {'action': 'live'})
             client.recv(1024)
         except socket_lib.error as e:
+            client.settimeout(int(ServerConfig.TIME_OUT.value))
             return False
         else:
+            client.settimeout(int(ServerConfig.TIME_OUT.value))
             return True
 

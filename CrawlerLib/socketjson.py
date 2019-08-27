@@ -1,21 +1,23 @@
 import json
 import pprint
+import socket
 
-from CrawlerLib.show_notify import show_debug
+from CrawlerLib.show_notify import show_debug, show_warning
 
 
-def _send(socket, data):
+def _send(s, data):
     try:
         msg = json.dumps(data).encode()
     except:
         msg = ''
-    socket.send(msg)
+    s.send(msg)
 
 
-def _recev(socket):
+def _recev(s, default={}):
+    data = default
     try:
-        msg = socket.recv(10240)
+        msg = s.recv(10240)
         data = json.loads(msg.decode())
-    except:
-        data = {}
+    except socket.error as e:
+        show_warning(format(e))
     return data

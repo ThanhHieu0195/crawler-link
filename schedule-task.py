@@ -32,3 +32,5 @@ for row in data_tasks:
             print('task will exec at: ', loop)
 
 s.run()
+
+print('DONE')

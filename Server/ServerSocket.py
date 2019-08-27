@@ -1,6 +1,6 @@
 from Configs.enum import ServerConfig
 from CrawlerLib.server import create_server, get_master_option
-from CrawlerLib.show_notify import show_warning, show_info, show_debug
+from CrawlerLib.show_notify import show_warning, show_notify, show_debug
 from CrawlerLib.socketjson import _recev, _send
 from Facade.ServerProcess.ServerProcess import ServerProcess
 from Configs.constant import PROXIES
@@ -30,7 +30,7 @@ class ServerSocket:
                 pass
             except Exception as e:
                 show_warning('ERROR')
-                print(str(e))
+                print(format(e))
 
     @staticmethod
     def init_proxies():

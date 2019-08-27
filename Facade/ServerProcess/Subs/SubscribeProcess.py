@@ -1,4 +1,4 @@
-from CrawlerLib.show_notify import show_info
+from CrawlerLib.show_notify import show_notify
 from CrawlerLib.socketjson import _send
 from Facade.ServerProcess.Subs.ISubProcess import ISubProcess
 
@@ -12,7 +12,7 @@ class SubscribeProcess(ISubProcess):
         client_address = main.client_address
         connection = main.connection
 
-        show_info(client_address[0] + " was subscribed with type " + data['type'])
+        show_notify(client_address[0] + " was subscribed with type " + data['type'])
         is_add = True
         if len(main.clients[data['type']]) > 0:
             for a in main.clients[data['type']]:

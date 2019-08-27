@@ -3,7 +3,7 @@ import pprint
 from Configs.enum import ServerConfig
 from CrawlerLib.Pymongo import MongodbClient
 from CrawlerLib.helper import get_master_attr
-from CrawlerLib.show_notify import show_debug
+from CrawlerLib.show_notify import show_debug, show_warning
 from Facade.DetectLink.Plugin.ILink import ILink
 import requests
 import json
@@ -41,14 +41,16 @@ class YoutubeLink(ILink):
             s.proxies = proxies
 
         try:
-            response = s.get(url)
-        except ConnectionError as err:
-            print('Error %s' % format(err))
-        except:
-            print('12312312312312312')
+            show_debug('Call request: %s' % url)
+            response = s.get(url, timeout=10)
+        except requests.ConnectionError as err:
+            show_warning(format(err))
+            result['type'] = 'requests'
+            result['msg'] = str(err)
+        except requests.HTTPError as err:
+            show_warning(format(err))
         else:
             d = response.json()
-
             if 'error' not in d:
                 result['error'] = False
                 result['data'] = {
@@ -60,6 +62,19 @@ class YoutubeLink(ILink):
                     'created_time': None,
                     'process_time': time.time()
                 }
+            else:
+                result['msg'] = get_master_attr('error.errors.0.message', d, 'Error from api youtube')
+                if get_master_attr('error.code', d, None) == 400:
+                    if get_master_attr('error.errors.0.reason', d, None) == 'keyInvalid':
+                        result['type'] = 'api_key'
+                        result['msg'] = 'Api key error'
+                    else:
+                        result['type'] = 'link_id'
+                        result['msg'] = 'Link id error'
+
+                else:
+                    result['type'] = 'youtube_error'
+
         return result
 
     def process_response(self, result):
@@ -88,5 +103,14 @@ class YoutubeLink(ILink):
         return -1
 
     def process_response_error(self, params, data):
+        if data['type'] == 'requests':
+            if 'proxy' in params:
+                del params['proxy']
+            return {
+                'params': params,
+                'reassign': True,
+                'change_proxy': True,
+                'remove_proxy': True
+            }
         return None
 

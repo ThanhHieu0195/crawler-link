@@ -1,4 +1,0 @@
-#! /bin/bash
-Script/changeport;
-sudo kill -9 $(ps -aux | grep python3.5| awk '{print $2}');
-sudo python3.5 server.py log_name=server.log

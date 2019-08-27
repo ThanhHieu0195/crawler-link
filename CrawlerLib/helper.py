@@ -1,6 +1,7 @@
 import functools
 import sys
 import re
+import time
 
 
 def get_master_attr(key_dot, options, default=None):
@@ -28,3 +29,7 @@ def get_sys_params():
         if len(a) >= 2:
             params[a[0]] = a[1]
     return params
+
+
+def get_time_log():
+    return time.strftime('%d-%m-%Y %H:%I')

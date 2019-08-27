@@ -1,0 +1,26 @@
+#!/bin/bash
+
+usage() { echo "Usage: $0 [-t <type>] [-l <logname>]" 1>&2; exit 1; }
+
+while getopts ":t:l:" o; do
+    case "${o}" in
+        t)
+            type=${OPTARG}
+            ;;
+        l)
+            logname=${OPTARG}
+            ;;
+        *)
+            echo usage
+    esac
+done
+shift $((OPTIND-1))
+
+if [ -z "${type}" ] || [ -z "${logname}" ]; then
+    usage
+fi
+
+echo "Starting client with type $type"
+echo -e "Client is runnning \e[0m...\e[0m"
+echo -e "Run command view log client \"\e[1mtail -f Log/${logname}.log\e[0m\""
+sudo python3 -u clientsocket.py type=$type >> Log/${logname}.log 2>&1

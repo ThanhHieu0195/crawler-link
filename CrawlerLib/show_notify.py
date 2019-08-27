@@ -1,11 +1,10 @@
 import os, sys
-import logging
-from CrawlerLib.helper import get_sys_params, get_master_attr
+from CrawlerLib.helper import get_sys_params, get_time_log
 
 if sys.platform.lower() == "win32":
     os.system('color')
 
-# Group of Different functions for different styles
+
 class style():
     BLACK = lambda x: '\033[30m' + str(x)
     RED = lambda x: '\033[31m' + str(x)
@@ -20,29 +19,28 @@ class style():
 
 
 params = get_sys_params()
-log_name = get_master_attr('log_name', params, 'log.log')
-path_log='%s/Log/%s' % (os.getcwd(), log_name)
-print(path_log)
-logging.basicConfig(filename=path_log, level=logging.DEBUG)
+
+
+def show_text(msg):
+    print(msg)
+
 
 def show_warning(msg):
     if 'debug' in params:
         print(style.BLUE(msg) + style.RESET(""))
     else:
-        print('[Error] %s' % msg)
-        logging.warning(msg)
+        print('[%s Error] %s' % (get_time_log(), msg))
 
 
-def show_info(msg):
+def show_notify(msg):
     if 'debug' in params:
         print(style.BLUE(msg) + style.RESET(""))
     else:
-        print('[Notify] %s' % msg)
-        logging.info(msg)
+        print('[%s Notify] %s' % (get_time_log(), msg))
+
 
 def show_debug(msg):
     if 'debug' in params:
         print(style.YELLOW(msg) + style.RESET(""))
     else:
-        print('[Debug]: %s' % msg)
-        logging.debug(msg)
+        print('[%s Debug] %s' % (get_time_log(), msg))

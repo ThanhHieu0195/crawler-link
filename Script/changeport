@@ -1,28 +1,16 @@
 # /bin/bash
-
-# ubuntu 1
-#sudo chown -R hieutct:hieutct /home/hieutct/docker/crawler-link/
-#sudo rm -rf /home/hieutct/docker/crawler-link/.env
-#port=$(date +"%I%S")
-#echo "TYPE=ytb
-#IP_ADDRESS=localhost
-#PORT=$port
-#NUM_CLIENT=10
-#CLIENT_TYPE=ytb
-#API_YTB_KEY=AIzaSyDNli7U6XFRiBCIxClMRPkObGvrm9Fxc6c
-#MONGO_HOST=192.168.1.80
-#MONGO_DATABASE=crawler" >> /home/hieutct/docker/crawler-link/.env
-
-# ubuntu 2
-sudo chown -R hieutct:hieutct /home/hieutct/syn/crawler-link
-sudo rm -rf /home/hieutct/syn/crawler-link/.env
 port=$(date +"%I%S")
+mongo_host=192.168.1.80
+api_youtube_key=AIzaSyDNli7U6XFRiBCIxClMRPkObGvrm9Fxc6c
+current_path=$(pwd)
+
+sudo chown -R hieutct:hieutct $current_path
+sudo rm -rf $current_path/.env
 echo "TYPE=ytb
 IP_ADDRESS=localhost
 PORT=$port
 NUM_CLIENT=10
-CLIENT_TYPE=ytb
-API_YTB_KEY=AIzaSyDNli7U6XFRiBCIxClMRPkObGvrm9Fxc6c
-MONGO_HOST=localhost
-MONGO_DATABASE=crawler" >> /home/hieutct/syn/crawler-link/.env
-
+CLIENT_TYPE=fb
+API_YTB_KEY=$api_youtube_key
+MONGO_HOST=$mongo_host
+MONGO_DATABASE=crawler" >> $current_path/.env

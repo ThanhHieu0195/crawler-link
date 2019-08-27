@@ -5,14 +5,13 @@
     pip3 install -U python-dotenv
     pip3 install requests
     pip3 install pymongo
-#### Server
+#### serversocket
     config .env
-    pip3 install pymongo
-    python3 server.py
+    python3 serversocket.py or Script/serversocket with log file
     
-#### Client
+#### clientsocket
     config .env
-    python3 client.py
+    python3 clientsocket.py or Script/clientsocket -t ins -l clientsocket-log with log file
     
 #### Schedule
     crontab -e
@@ -20,3 +19,7 @@
     
 #### Command 
     - Generate fake data link: python3 command.py --run=fake-link
+    
+### Script
+    Script/serversocket # comment changeport script
+    Script/clientsocket -t ins -l clientsocket-ins-log

@@ -1,6 +1,7 @@
+from CrawlerLib import show_notify
 from CrawlerLib.client import create_client
 from CrawlerLib.helper import get_sys_params, get_master_attr
-from CrawlerLib.show_notify import show_debug
+from CrawlerLib.show_notify import show_debug, show_warning, show_notify, show_text
 from CrawlerLib.socketjson import _recev, _send
 from Configs.enum import ServerConfig
 from Facade.DetectLink.DetectLink import DetectLink
@@ -23,10 +24,10 @@ class ClientSocket:
                 data = _recev(self.client)
                 if "action" in data:
                     if data['action'] == 'notify' and data['ref'] == 'subscribed':
-                        print("subscribe was successfully")
+                        show_notify("subscribe was successfully")
 
                     if data['action'] == 'assign':
-                        print('\n\n')
+                        show_text('== NEW TASK Assign ===')
                         show_debug('Receiver assign task with link %s' % get_master_attr('params.link_id', data, None))
                         self.do_assign(data['params'])
 
@@ -36,11 +37,11 @@ class ClientSocket:
                             'status': True
                         })
             except ConnectionError as err:
-                print("OS error: {0}".format(err))
+                show_warning("OS error: {0}".format(err))
 
     def do_assign(self, data):
         res = self.detectLinkProvider.process_request(data['type'], data)
         res['action'] = 'detect-link'
-        show_debug('Response ...')
+        show_debug('Result response process request ...')
         print(res)
         _send(self.client, res)
