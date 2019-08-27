@@ -8,6 +8,7 @@ import requests
 import json
 import re
 import time
+import datetime
 
 
 class InstagramLink(ILink):
@@ -57,7 +58,7 @@ class InstagramLink(ILink):
                     'likes': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.edge_media_preview_like.count', d, None),
                     'comments': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.edge_media_preview_comment.count', d, None),
                     'created_time': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.taken_at_timestamp', d, None),
-                    'process_time': time.time()
+                    'updated_at': datetime.datetime.utcnow()
                 }
             else:
                 result['msg'] = 'Not detect link'
@@ -73,7 +74,7 @@ class InstagramLink(ILink):
                 'likes': result['data']['likes'],
                 'comments': result['data']['comments'],
                 'post_created_time': result['data']['created_time'],
-                'last_update': result['data']['process_time']
+                'updated_at': result['data']['updated_at']
             }
             res = self.mongodb.get_link_collection().update_one({
                 '_id': link['_id']

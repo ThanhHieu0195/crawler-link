@@ -7,7 +7,7 @@ from CrawlerLib.show_notify import show_debug, show_warning
 from Facade.DetectLink.Plugin.ILink import ILink
 from Configs.constant import FACEBOOK_TOKEN
 import requests
-import time
+import datetime
 
 
 class FacebookLink(ILink):
@@ -65,7 +65,7 @@ class FacebookLink(ILink):
                     'comments': d['comments']['count'],
                     'reactions': d['reactions']['summary']['total_count'],
                     'created_time': d['created_time'],
-                    'process_time': time.time()
+                    'updated_at': datetime.datetime.utcnow()
                 }
             else:
                 result['type'] = 'api_fb_error'
@@ -87,7 +87,7 @@ class FacebookLink(ILink):
                 'comments': result['data']['comments'],
                 'reactions': result['data']['reactions'],
                 'post_created_time': result['data']['created_time'],
-                'last_update': result['data']['process_time']
+                'updated_at': result['data']['updated_at']
             }
             res = self.mongodb.get_link_collection().update_one({
                 '_id': link['_id']

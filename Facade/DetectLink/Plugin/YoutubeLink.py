@@ -8,7 +8,7 @@ from Facade.DetectLink.Plugin.ILink import ILink
 import requests
 import json
 import re
-import time
+import datetime
 
 
 class YoutubeLink(ILink):
@@ -59,7 +59,7 @@ class YoutubeLink(ILink):
                     'views': get_master_attr('items.0.statistics.viewCount', d, None),
                     'comments': get_master_attr('items.0.statistics.commentCount', d, None),
                     'created_time': None,
-                    'process_time': time.time()
+                    'updated_at': datetime.datetime.utcnow()
                 }
             else:
                 result['msg'] = get_master_attr('error.errors.0.message', d, 'Error from api youtube')
@@ -87,7 +87,7 @@ class YoutubeLink(ILink):
                 'views': result['data']['views'],
                 'dislikes': result['data']['dislikes'],
                 'post_created_time': result['data']['created_time'],
-                'last_update': result['data']['process_time']
+                'updated_at': result['data']['updated_at']
             }
             res = self.mongodb.get_link_collection().update_one({
                 '_id': link['_id']

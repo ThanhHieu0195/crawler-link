@@ -4,7 +4,6 @@ from CrawlerLib.show_notify import show_warning, show_notify, show_debug
 from CrawlerLib.socketjson import _recev, _send
 from Facade.ServerProcess.ServerProcess import ServerProcess
 from Configs.constant import PROXIES
-import pprint
 
 
 class ServerSocket:
