@@ -18,4 +18,4 @@ if [ -z "${port}" ]; then
 fi
 
 sudo kill -9 $(lsof -t -i:$port)
-python3 -u servercommand.py port=$port >> Log/servercommand.log 2>&1
+python3.5 -u servercommand.py port=$port >> Log/servercommand.log 2>&1

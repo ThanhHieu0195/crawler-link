@@ -1,3 +1,4 @@
+#!/bin/bash
 usage() { echo "Usage: $0 [-p <port>]" 1>&2; exit 1; }
 
 while getopts ":p:" o; do
@@ -15,13 +16,16 @@ if [ -z "${port}" ]; then
     usage
 fi
 
+d=$(date +%s)
+d=$((d+8640))
+
 data='{
-    "body": [
-        {"link_id": "100003803082906_1486305034839585", "type": "fb", "timeline": ["10:00", "11:00"], "deadline": 1566897464},
-        {"link_id": "BcNyJJLAGOe", "type": "ins", "timeline": ["10:00", "11:00"], "deadline": 1566897464},
-        {"link_id": "0RH0Xf3Iw5g", "type": "ytb", "timeline": ["10:00", "11:00"], "deadline": 1566897464}
-    ],
-    "hook_url": "https://localhost:123123/api"
+"body":[
+    {"link_id": "100003803082906_1486305034839585", "type": "fb", "timeline": ["16:59", "11:00"], "deadline": "'$d'"},
+    {"link_id": "BcNyJJLAGOe", "type": "ins", "timeline": ["10:00", "11:00"], "deadline": "'$d'"},
+    {"link_id": "0RH0Xf3Iw5g", "type": "ytb", "timeline": ["10:00", "11:00"], "deadline": "'$d'"}
+],
+"hook_url": "https://localhost:123123/api"
 }'
 
 curl -X POST http://localhost:$port -H "Content-Type: application/json" -d "$data"

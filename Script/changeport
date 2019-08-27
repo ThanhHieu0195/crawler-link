@@ -1,9 +1,8 @@
-# /bin/bash
+#!/bin/bash
 port=$(date +"%I%S")
 mongo_host=192.168.1.80
 api_youtube_key=AIzaSyDNli7U6XFRiBCIxClMRPkObGvrm9Fxc6c
 current_path=$(pwd)
-
 sudo chown -R hieutct:hieutct $current_path
 sudo rm -rf $current_path/.env
 echo "TYPE=ytb

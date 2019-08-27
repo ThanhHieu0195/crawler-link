@@ -1,4 +1,4 @@
-# /bin/bash
+#!/bin/bash
 
 # ubuntu1
 sudo chown -R hieutct:hieutct /home/hieutct/syn/crawler-link/

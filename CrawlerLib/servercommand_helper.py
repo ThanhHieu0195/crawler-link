@@ -26,7 +26,8 @@ def process_save_data_link(data):
         item['updated_at'] = datetime.datetime.utcnow()
         item['status'] = 1
         item['hook_url'] = hook_url
+        print(item)
         arr.append(item)
-        result = link_collection.insert_many(arr)
-        show_debug('Inserted')
-        print(result.inserted_ids)
+    result = link_collection.insert_many(arr)
+    show_debug('Inserted')
+    print(result.inserted_ids)

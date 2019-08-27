@@ -4,6 +4,7 @@ from CrawlerLib.server import create_server
 import socket
 import time
 import json
+import pprint
 
 from CrawlerLib.servercommand_helper import detect_json, process_save_data_link
 
@@ -38,6 +39,7 @@ if check:
                     except socket.error:
                         break
                 sjson = detect_json(data.decode())
+                print(sjson)
                 if sjson:
                     data = json.loads(sjson)
                     process_save_data_link(data)
