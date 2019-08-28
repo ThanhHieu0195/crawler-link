@@ -42,3 +42,16 @@ def get_time_log():
 def print_header_log():
     print("=========================================")
     print("Today: " + get_time_log())
+
+
+def fetch_proxies():
+    f = open('Configs/proxies')
+    proxies = eval(f.read())
+    f.close()
+    return proxies
+
+
+def update_proxies(proxies):
+    f = open('Configs/proxies', 'w')
+    f.write(str(proxies))
+    f.close()

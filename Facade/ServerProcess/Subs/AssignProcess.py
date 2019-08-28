@@ -1,11 +1,10 @@
 from Configs.enum import ServerConfig
-from CrawlerLib.helper import get_master_attr
+from CrawlerLib.helper import get_master_attr, update_proxies, fetch_proxies
 from CrawlerLib.server import get_master_option
 from CrawlerLib.show_notify import show_notify, show_warning, show_debug
 from CrawlerLib.socketjson import _send, _recev
 from Facade.DetectLink.DetectLink import DetectLink
 from Facade.ServerProcess.Subs.ISubProcess import ISubProcess
-import pprint
 import socket as socket_lib
 
 
@@ -105,19 +104,19 @@ class AssignProcess(ISubProcess):
         return client
 
     def __get_proxy(self):
-        return get_master_option(self.main.proxies)
+        return get_master_option(fetch_proxies())
 
     def _remove_proxy(self, proxy):
         def filter_proxy(x):
             return x != proxy
-        self.main.proxies = list(filter(filter_proxy, self.main.proxies))
+        return update_proxies(list(filter(filter_proxy, fetch_proxies())))
 
     def _remove_client(self, client_type, client):
         def filter_client(x):
             return x != client
 
-        self.main.proxies = list(filter(filter_client, self.main.clients[client_type]))
-        return self.main.proxies
+        self.main.clients[client_type] = list(filter(filter_client, self.main.clients[client_type]))
+        return self.main.clients
 
     @staticmethod
     def check_client(client):

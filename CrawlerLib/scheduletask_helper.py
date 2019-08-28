@@ -4,7 +4,7 @@ import datetime
 from Background.masterclient import assign_task
 from CrawlerLib.Pymongo import MongodbClient
 from CrawlerLib.helper import get_utc_time, get_master_attr
-from CrawlerLib.show_notify import show_text
+from CrawlerLib.show_notify import show_text, show_warning, show_debug, show_notify
 import requests
 
 
@@ -30,26 +30,30 @@ def process_result_callback(link_id):
             'post_created_time': get_master_attr('post_created_time', link, None),
             'type': get_master_attr('type', link, None),
         }
-        requests.post(hook_url, data)
-        show_text('Hook request %s' % link_id)
+        try:
+            requests.post(hook_url, data)
+        except requests.exceptions.ConnectionError as e1:
+            show_warning(format(e1))
+        except Exception as e:
+            show_warning(format(e))
+
+        show_debug('Hook request %s' % link_id)
         print(data)
 
 
 def start_schedule():
     year = int(get_utc_time('%Y'))
     month = int(get_utc_time('%m'))
-    day = int(get_utc_time('%y'))
-    hour = int(get_utc_time('%H'))
-
+    day = int(get_utc_time('%d'))
     condition = {
         "status": 1,
         "deadline": {
             "$gt": datetime.datetime(year, month, day)
         },
-        "timeline": '%s:00' % hour
+        "timeline": '%s:00' % get_utc_time('%H')
     }
 
-    show_text('Execute schedule task ...')
+    show_debug('Execute schedule task ...')
     print(condition)
     data_tasks = client.get_link_collection().find(condition)
 
@@ -66,6 +70,6 @@ def start_schedule():
         s.enter(idx * 10, 1, job, (option,))
         idx += 1
 
-    print('%s task waiting exec' % len(tasks))
+    show_debug('%s task waiting exec' % len(tasks))
     s.run()
-    print('DONE')
+    show_notify('DONE')

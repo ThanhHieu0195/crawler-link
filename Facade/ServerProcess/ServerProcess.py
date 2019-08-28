@@ -1,5 +1,3 @@
-from CrawlerLib.server import get_master_option
-from CrawlerLib.show_notify import show_debug
 from Facade.ServerProcess.Subs.AssignProcess import AssignProcess
 from Facade.ServerProcess.Subs.SubscribeProcess import SubscribeProcess
 
@@ -20,11 +18,10 @@ class ServerProcess:
         return ServerProcess.Main
 
     # define response
-    def process_sub(self, client_address, connection, clients, proxies, data):
+    def process_sub(self, client_address, connection, clients, data):
         self.client_address = client_address
         self.connection = connection
         self.clients = clients
-        self.proxies = proxies
 
         if 'action' in data and data['action'] in self.subs:
             return self.subs[data['action']].process_sub(self, data)

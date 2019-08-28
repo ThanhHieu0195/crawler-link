@@ -5,14 +5,12 @@ from CrawlerLib.helper import get_master_attr
 from CrawlerLib.server import get_master_option
 from CrawlerLib.show_notify import show_debug, show_warning
 from Facade.DetectLink.Plugin.ILink import ILink
-from Configs.constant import FACEBOOK_TOKEN
 import requests
 import datetime
 
 
 class FacebookLink(ILink):
     def __init__(self):
-        self.__init_tokens()
         self.mongodb = MongodbClient.get_instance()
 
     @staticmethod
@@ -140,20 +138,24 @@ class FacebookLink(ILink):
             }
         return None
 
-    def __init_tokens(self):
-        self.tokens = []
-        for t in FACEBOOK_TOKEN:
-            self.tokens.append({
-                'status': True,
-                'amount': 0,
-                'key': t
-            })
-
     def __get_token(self):
+        self.__fetch_token()
         return get_master_option(self.tokens)
 
     def __remove_token(self, token):
         def filter_token(t):
             return t['key'] != token
-        self.tokens = list(filter(filter_token, self.tokens))
+        self._update_token(list(filter(filter_token, self.tokens)))
         return self.tokens
+
+    def __fetch_token(self):
+        f = open('Configs/facebooktoken')
+        self.tokens = eval(f.read())
+        f.close()
+        return self.tokens
+
+    def _update_token(self, tokens):
+        f = open('Configs/facebooktoken', 'w')
+        self.tokens = tokens
+        f.write(str(tokens))
+        f.close()
