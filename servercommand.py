@@ -1,5 +1,5 @@
 from Configs.enum import ServerConfig
-from CrawlerLib.helper import get_sys_params, get_master_attr
+from CrawlerLib.helper import get_sys_params, get_master_attr, print_header_log
 from CrawlerLib.server import create_server
 import socket
 import time
@@ -9,8 +9,7 @@ import pprint
 from CrawlerLib.servercommand_helper import detect_json, process_save_data_link
 from CrawlerLib.show_notify import show_text, show_warning
 
-print("=========================================")
-print("Today: " + time.strftime('%d-%m-%Y %H:%M', time.gmtime()))
+print_header_log()
 
 params = get_sys_params()
 port = get_master_attr('port', params, None)

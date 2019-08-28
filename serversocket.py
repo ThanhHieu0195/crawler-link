@@ -1,8 +1,8 @@
+from CrawlerLib.helper import print_header_log
 from Server.ServerSocket import ServerSocket
 import time
 
 
-print("=========================================")
-print("Today: " + time.strftime('%d-%m-%Y %H:%M', time.gmtime()))
+print_header_log()
 s = ServerSocket()
 s.listen()

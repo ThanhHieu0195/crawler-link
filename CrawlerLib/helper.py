@@ -31,5 +31,14 @@ def get_sys_params():
     return params
 
 
+def get_utc_time(time_format='%d-%m-%Y %H:%M'):
+    return time.strftime(time_format, time.gmtime())
+
+
 def get_time_log():
-    return time.strftime('%d-%m-%Y %H:%I')
+    return get_utc_time('%d-%m-%Y %H:%M')
+
+
+def print_header_log():
+    print("=========================================")
+    print("Today: " + get_time_log())
