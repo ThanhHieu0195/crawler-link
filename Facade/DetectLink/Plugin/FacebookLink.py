@@ -1,5 +1,5 @@
 import pprint
-
+import re
 from CrawlerLib.Pymongo import MongodbClient
 from CrawlerLib.helper import get_master_attr
 from CrawlerLib.server import get_master_option
@@ -59,10 +59,11 @@ class FacebookLink(ILink):
                 result['error'] = False
                 result['data'] = {
                     'link_id': data['link_id'],
-                    'likes': d['likes']['count'],
-                    'comments': d['comments']['count'],
-                    'reactions': d['reactions']['summary']['total_count'],
-                    'created_time': d['created_time'],
+                    'likes': get_master_attr('likes.count', d, None),
+                    'shares': get_master_attr('shares.count', d, None),
+                    'comments': get_master_attr('comments.count', d, None),
+                    'reactions': get_master_attr('reactions.summary.toal_count', d, None),
+                    'created_time': get_master_attr('created_time', d, None),
                     'updated_at': str(datetime.datetime.utcnow())
                 }
             else:
@@ -77,13 +78,25 @@ class FacebookLink(ILink):
 
     def process_response(self, result):
         show_debug('processing response ...')
-        link = self.mongodb.get_link_collection().find_one({'link_id': result['data']['link_id']})
+        link_id = get_master_attr('data.link_id', result, None)
+
+        # get user id
+        matches = re.findall(r'(.*)_(.*)', link_id)
+        user_id = None
+        if len(matches):
+            user_id = matches[0][0]
+
+        link = self.mongodb.get_link_collection().find_one({'link_id': link_id})
         collection_history = self.mongodb.get_link_history_collection()
         if link:
             item = {
+                'profile': {
+                    'id': user_id,
+                },
                 'likes': result['data']['likes'],
                 'comments': result['data']['comments'],
                 'reactions': result['data']['reactions'],
+                'shares': result['data']['shares'],
                 'post_created_time': result['data']['created_time'],
                 'updated_at': result['data']['updated_at']
             }

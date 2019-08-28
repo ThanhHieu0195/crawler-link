@@ -22,7 +22,9 @@ def process_result_callback(link_id):
     if hook_url:
         data = {
             'link_id': link_id,
-            'user_id': get_master_attr('user_id', link, None),
+            'user_id': get_master_attr('profile.id', link, None),
+            'user_name': get_master_attr('profile.username', link, None),
+            'user_display': get_master_attr('profile.display_name', link, None),
             'comment': get_master_attr('comments', link, None),
             'shares': get_master_attr('shares', link, None),
             'reactions': get_master_attr('reactions', link, None),

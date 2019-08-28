@@ -58,7 +58,14 @@ class InstagramLink(ILink):
                     'likes': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.edge_media_preview_like.count', d, None),
                     'comments': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.edge_media_preview_comment.count', d, None),
                     'created_time': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.taken_at_timestamp', d, None),
-                    'updated_at': str(datetime.datetime.utcnow())
+                    'updated_at': str(datetime.datetime.utcnow()),
+                    'profile': {
+                        'id': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.owner.id', d, None),
+                        'username': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.owner.username', d, None),
+                        'display_name': get_master_attr('entry_data.PostPage.0.graphql.shortcode_media.owner.full_name', d,
+                                                    None)
+                    }
+
                 }
             else:
                 result['msg'] = 'Not detect link'
@@ -71,6 +78,7 @@ class InstagramLink(ILink):
         collection_history = self.mongodb.get_link_history_collection()
         if link:
             item = {
+                'profile': get_master_attr('data.profile', result, None),
                 'likes': result['data']['likes'],
                 'comments': result['data']['comments'],
                 'post_created_time': result['data']['created_time'],
