@@ -17,13 +17,6 @@ if [ -z "${port}" ]; then
 fi
 
 d="20190828"
-data='{
-"body":[
-    {"link_id": "100003803082906_1486305034839585", "type": "fb", "timeline": ["2:00"], "deadline": "'$d'"},
-    {"link_id": "BcNyJJLAGOe", "type": "ins", "timeline": ["2:00", "3:00"], "deadline": "'$d'"},
-    {"link_id": "0RH0Xf3Iw5g", "type": "ytb", "timeline": ["2:00", "3:00"], "deadline": "'$d'"}
-],
-"hook_url": "https://localhost:123123/api"
-}'
+data='{"body":[{"link_id": "100003803082906_1486305034839585", "type": "fb", "timeline": ["02:10"], "deadline": "'$d'"},{"link_id": "BcNyJJLAGOe", "type": "ins", "timeline": ["02:00", "03:00"], "deadline": "'$d'"},{"link_id": "0RH0Xf3Iw5g", "type": "ytb", "timeline": ["02:00", "03:00"], "deadline": "'$d'"}],"hook_url": "http://dev.api.callback/callback-api/"}'
 
 curl -X POST http://localhost:$port -H "Content-Type: application/json" -d "$data"

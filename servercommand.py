@@ -2,12 +2,10 @@ from Configs.enum import ServerConfig
 from CrawlerLib.helper import get_sys_params, get_master_attr, print_header_log
 from CrawlerLib.server import create_server
 import socket
-import time
 import json
-import pprint
 
-from CrawlerLib.servercommand_helper import detect_json, process_save_data_link
-from CrawlerLib.show_notify import show_text, show_warning
+from CrawlerLib.servercommand_helper import detect_json, process_save_data_link, send_http_result
+from CrawlerLib.show_notify import show_text, show_warning, show_notify, show_debug
 
 print_header_log()
 
@@ -34,22 +32,27 @@ if check:
             connection.settimeout(1.5)
             show_text('====== NEW TASK =======')
             try:
+                result = {"error": True, "msg": "Fail"}
                 while True:
                     try:
                         data += connection.recv(1024)
                     except socket.error:
                         break
                 sjson = detect_json(data.decode())
+                show_debug('Body request')
                 print(sjson)
                 if sjson:
                     data = json.loads(sjson)
-                    process_save_data_link(data)
-                connection.sendall(
-                    b'HTTP/1.0 200 OK\r\nContent-Length: 11\r\nContent-Type: text charset=UTF-8\r\n\r\nsuccess\r\n', )
+                    result = process_save_data_link(data)
+
+                show_notify('Result')
+                print(result)
+                send_http_result(connection, result)
             except Exception as e:
                 show_warning(format(e))
-                connection.sendall(
-                    b'HTTP/1.0 200 OK\r\nContent-Length: 11\r\nContent-Type: text charset=UTF-8\r\n\r\nFail\r\n', )
+                result['msg'] = format(e)
+                send_http_result(connection, result)
             connection.close()
         except socket.error as err:
             print(err)
+

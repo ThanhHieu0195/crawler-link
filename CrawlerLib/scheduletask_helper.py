@@ -3,8 +3,9 @@ import time
 import datetime
 from Background.masterclient import assign_task
 from CrawlerLib.Pymongo import MongodbClient
-from CrawlerLib.helper import get_utc_time
+from CrawlerLib.helper import get_utc_time, get_master_attr
 from CrawlerLib.show_notify import show_text
+import requests
 
 
 client = MongodbClient.get_instance()
@@ -17,7 +18,21 @@ def job(data):
 
 def process_result_callback(link_id):
     link = client.get_link_collection().find_one({"link_id": link_id})
-    print(link)
+    hook_url = get_master_attr('hook_url', link, None)
+    if hook_url:
+        data = {
+            'link_id': link_id,
+            'user_id': get_master_attr('user_id', link, None),
+            'comment': get_master_attr('comments', link, None),
+            'shares': get_master_attr('shares', link, None),
+            'reactions': get_master_attr('reactions', link, None),
+            'views': get_master_attr('views', link, None),
+            'post_created_time': get_master_attr('post_created_time', link, None),
+            'type': get_master_attr('type', link, None),
+        }
+        requests.post(hook_url, data)
+        show_text('Hook request %s' % link_id)
+        print(data)
 
 
 def start_schedule():
