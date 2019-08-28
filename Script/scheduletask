@@ -1,0 +1,8 @@
+#!/bin/bash
+echo "schedule task running ..."
+date -u
+BASEDIR=$(dirname $(realpath "$0"))
+cd $BASEDIR
+cd ..
+
+sudo python3.5 -u scheduletask.py >> Log/scheduletask.log 2>&1

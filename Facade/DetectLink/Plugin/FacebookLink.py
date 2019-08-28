@@ -65,7 +65,7 @@ class FacebookLink(ILink):
                     'comments': d['comments']['count'],
                     'reactions': d['reactions']['summary']['total_count'],
                     'created_time': d['created_time'],
-                    'updated_at': datetime.datetime.utcnow()
+                    'updated_at': str(datetime.datetime.utcnow())
                 }
             else:
                 result['type'] = 'api_fb_error'

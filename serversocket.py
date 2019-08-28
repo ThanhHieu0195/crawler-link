@@ -3,6 +3,6 @@ import time
 
 
 print("=========================================")
-print("Today: " + time.strftime('%d-%m-%Y %H:%M'))
+print("Today: " + time.strftime('%d-%m-%Y %H:%M', time.gmtime()))
 s = ServerSocket()
 s.listen()

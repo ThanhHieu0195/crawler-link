@@ -18,4 +18,9 @@ if [ -z "${port}" ]; then
 fi
 
 sudo kill -9 $(lsof -t -i:$port)
+
+echo -e "WELCOME TO COMMAND"
+echo -e "Server is runnning \e[0m...\e[0m"
+echo -e "Run command view log server \"\e[1mtail -f Log/servercommand.log\e[0m\""
+
 python3.5 -u servercommand.py port=$port >> Log/servercommand.log 2>&1

@@ -8,7 +8,8 @@ from CrawlerLib.show_notify import show_debug, show_warning
 def _send(s, data):
     try:
         msg = json.dumps(data).encode()
-    except:
+    except Exception as e:
+        show_warning(format(e))
         msg = ''
     s.send(msg)
 

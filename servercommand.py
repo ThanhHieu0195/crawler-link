@@ -7,9 +7,10 @@ import json
 import pprint
 
 from CrawlerLib.servercommand_helper import detect_json, process_save_data_link
+from CrawlerLib.show_notify import show_text, show_warning
 
 print("=========================================")
-print("Today: " + time.strftime('%d-%m-%Y %H:%M'))
+print("Today: " + time.strftime('%d-%m-%Y %H:%M', time.gmtime()))
 
 params = get_sys_params()
 port = get_master_attr('port', params, None)
@@ -32,6 +33,7 @@ if check:
             connection, client_address = s.accept()
             data = b''
             connection.settimeout(1.5)
+            show_text('====== NEW TASK =======')
             try:
                 while True:
                     try:
@@ -45,7 +47,8 @@ if check:
                     process_save_data_link(data)
                 connection.sendall(
                     b'HTTP/1.0 200 OK\r\nContent-Length: 11\r\nContent-Type: text charset=UTF-8\r\n\r\nsuccess\r\n', )
-            except Exception:
+            except Exception as e:
+                show_warning(format(e))
                 connection.sendall(
                     b'HTTP/1.0 200 OK\r\nContent-Length: 11\r\nContent-Type: text charset=UTF-8\r\n\r\nFail\r\n', )
             connection.close()

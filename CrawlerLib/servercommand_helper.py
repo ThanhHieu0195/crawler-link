@@ -22,8 +22,15 @@ def process_save_data_link(data):
     hook_url = get_master_attr('hook_url', data, None)
     arr=[]
     for item in items:
+        matches = re.findall(r'(\d{4})(\d{2})(\d{2})', item['deadline'])
+        if matches:
+            item['deadline'] = datetime.datetime(int(matches[0][0]), int(matches[0][1]), int(matches[0][2]))
+        else:
+            item['deadline'] = datetime.datetime.utcnow()
+
         item['created_at'] = datetime.datetime.utcnow()
         item['updated_at'] = datetime.datetime.utcnow()
+        item['deadline'] = datetime.datetime.utcnow()
         item['status'] = 1
         item['hook_url'] = hook_url
         print(item)

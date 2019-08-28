@@ -59,7 +59,7 @@ class YoutubeLink(ILink):
                     'views': get_master_attr('items.0.statistics.viewCount', d, None),
                     'comments': get_master_attr('items.0.statistics.commentCount', d, None),
                     'created_time': None,
-                    'updated_at': datetime.datetime.utcnow()
+                    'updated_at': str(datetime.datetime.utcnow())
                 }
             else:
                 result['msg'] = get_master_attr('error.errors.0.message', d, 'Error from api youtube')
