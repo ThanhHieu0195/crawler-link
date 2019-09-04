@@ -14,3 +14,4 @@ class ServerConfig(Enum):
     MONGO_DATABASE = os.getenv('MONGO_DATABASE', 'crawler')
     API_YTB_KEY = os.getenv('API_YTB_KEY', None)
     TIME_OUT=15
+    ENABLE_SCREENSHOT=True
