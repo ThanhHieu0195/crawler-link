@@ -3,13 +3,14 @@ from Facade.Selemium.IBase import IBase
 from PIL import Image
 from io import BytesIO
 import time
+from selenium import webdriver
 
 
 class FBPost(IBase):
-    def screen_post(self, selenium, post_id):
-        selenium.driver.get('https://www.facebook.com/%s' % post_id)
-        selenium.driver.maximize_window()
-        selenium.driver.execute_script("""
+    def screen_post(self, _selenium, post_id):
+        _selenium.driver.get('https://www.facebook.com/%s' % post_id)
+        _selenium.driver.maximize_window()
+        _selenium.driver.execute_script("""
                 document.getElementById('headerArea').remove();
                 document.getElementById('pagelet_bluebar').remove();
                 window.scrollTo(0, document.body.scrollHeight);
@@ -17,11 +18,11 @@ class FBPost(IBase):
                 return screen.height;
                 """)
 
-        e = selenium.driver.find_element_by_id('contentArea')
+        e = _selenium.driver.find_element_by_id('contentArea')
         location = e.location
         size = e.size
 
-        png = selenium.driver.get_screenshot_as_png()
+        png = _selenium.driver.get_screenshot_as_png()
         im = Image.open(BytesIO(png))
 
         left = location['x']
@@ -32,5 +33,6 @@ class FBPost(IBase):
 
         png_name = '%s-%s' % (get_utc_time('%Y%m%d%H%M'), post_id)
         im.save('Screenshot/%s.png' % png_name)
-        selenium.driver.quit()
+        _selenium.driver.quit()
         return png_name
+

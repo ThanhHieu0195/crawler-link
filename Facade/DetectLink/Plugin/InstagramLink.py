@@ -88,7 +88,7 @@ class InstagramLink(ILink):
             }
 
             # screenshot
-            screenshot = Selenium.get_instance().screen_post(result['data']['link_id'])
+            screenshot = Selenium.get_instance().screen_post('ins', result['data']['link_id'])
             if screenshot:
                 item['screenshot'] = screenshot
 

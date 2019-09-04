@@ -15,6 +15,13 @@ def detect_json(json_text):
     return None
 
 
+def process_download_attachment(data):
+    f = open('Screenshot/%s.png' % data['attachment_name'], 'rb')
+    content = f.read()
+    f.close()
+    return content
+
+
 def process_save_data_link(data):
     result = {"error": True, "msg": "Fail"}
     mongodb = MongodbClient.get_instance()
@@ -62,6 +69,24 @@ def process_save_data_link(data):
 
 
 def send_http_result(response, result):
+    msg = result
+    response_headers = {
+        'Content-Type': 'image',
+        'Content-Length': len(msg),
+        'Connection': 'close',
+    }
+    response_headers_raw = ''.join('%s: %s\r\n' % (k, v) for k, v in response_headers.items())
+    response_proto = 'HTTP/1.1'
+    response_status = '200'
+    response_status_text = 'OK'  # this can be random
+    r = '%s %s %s\r\n' % (response_proto, response_status, response_status_text)
+    response.send(r.encode())
+    response.send(response_headers_raw.encode())
+    response.send(b'\r\n')  # to separate headers from body
+    response.send(msg)
+
+
+def send_http_json_result(response, result):
     msg = json.dumps(result)
     response_headers = {
         'Content-Type': 'application/json; encoding=utf8',

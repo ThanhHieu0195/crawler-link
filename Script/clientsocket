@@ -23,4 +23,4 @@ fi
 echo "Starting client with type $type"
 echo -e "Client is runnning \e[0m...\e[0m"
 echo -e "Run command view log client \"\e[1mtail -f Log/${logname}.log\e[0m\""
-sudo python3.5 -u clientsocket.py type=$type >> Log/${logname}.log 2>&1
+python3.5 -u clientsocket.py type=$type >> Log/${logname}.log 2>&1

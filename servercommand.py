@@ -4,7 +4,8 @@ from CrawlerLib.server import create_server
 import socket
 import json
 
-from CrawlerLib.servercommand_helper import detect_json, process_save_data_link, send_http_result
+from CrawlerLib.servercommand_helper import detect_json, process_save_data_link, send_http_json_result, \
+    process_download_attachment, send_http_result
 from CrawlerLib.show_notify import show_text, show_warning, show_notify, show_debug
 
 print_header_log()
@@ -43,15 +44,21 @@ if check:
                 print(sjson)
                 if sjson:
                     data = json.loads(sjson)
-                    result = process_save_data_link(data)
-
-                show_notify('Result')
-                print(result)
-                send_http_result(connection, result)
+                    if 'type' in data and data['type'] == 'download-attachment':
+                        show_debug('Process download attachment ...')
+                        result = process_download_attachment(data)
+                        show_notify('Result')
+                        send_http_result(connection, result)
+                    else:
+                        show_debug('Process save data link ...')
+                        result = process_save_data_link(data)
+                        show_notify('Result')
+                        print(result)
+                        send_http_json_result(connection, result)
             except Exception as e:
                 show_warning(format(e))
                 result['msg'] = format(e)
-                send_http_result(connection, result)
+                send_http_json_result(connection, result)
             connection.close()
         except socket.error as err:
             print(err)

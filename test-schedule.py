@@ -31,9 +31,9 @@ def job(data):
 # job({'type': 'ins', 'link_id': 'BqkRJwMFtMb'})
 # job({'type': 'ins', 'link_id': 'BqkRJwMFtMb'})
 # job({'type': 'ins', 'link_id': 'BqkRJwMFtMb'})
-# job({'type': 'ins', 'link_id': 'BqkRJwMFtMb'})
+# job({'type': 'ins', 'link_id': 'BcNyJJLAGOe'})
 # job({'type': 'ytb', 'link_id': 'j8U06veqxdU'})
 # job({'type': 'ytb', 'link_id': 'j8U06veqxdU'})
-# job({'type': 'ytb', 'link_id': 'j8U06veqxdU'})
+job({'type': 'ytb', 'link_id': '0RH0Xf3Iw5g'})
 
-job({'type': 'fb', 'link_id': '100003803082906_150922889588053222'})
+# job({'type': 'fb', 'link_id': '100003803082906_1486305034839585'})
