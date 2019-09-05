@@ -15,8 +15,8 @@ def detect_json(json_text):
     return None
 
 
-def process_download_attachment(data):
-    f = open('Screenshot/%s.png' % data['attachment_name'], 'rb')
+def process_download_attachment(attachment_name):
+    f = open('Screenshot/%s.png' % attachment_name, 'rb')
     content = f.read()
     f.close()
     return content
@@ -102,3 +102,11 @@ def send_http_json_result(response, result):
     response.send(response_headers_raw.encode())
     response.send(b'\r\n')  # to separate headers from body
     response.send(msg.encode(encoding="utf-8"))
+
+
+def get_query_params(data):
+    matches = re.findall(r'^[a-zA-Z]+ (.*) ', data)
+    if len(matches):
+        path = matches[0]
+        return path.split('/')
+    return None

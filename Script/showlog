@@ -6,5 +6,5 @@ then
     sudo apt-get install multitail
 fi
 
-multitail $(ls Log/*.log)
+multitail -s 2 Log/serversocket.log Log/servercommand.log Log/scheduletask.log
 

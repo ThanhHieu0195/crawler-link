@@ -2,12 +2,14 @@ from CrawlerLib.helper import get_utc_time
 from Facade.Selemium.IBase import IBase
 from PIL import Image
 from io import BytesIO
+import time
 
 
 class YoutubePost(IBase):
     def screen_post(self, selenium, post_id):
         selenium.driver.get('https://www.youtube.com/watch?v=%s' % post_id)
-        selenium.driver.implicitly_wait(2)
+
+        time.sleep(2)
         selenium.driver.maximize_window()
         png = selenium.driver.get_screenshot_as_png()
         im = Image.open(BytesIO(png))
