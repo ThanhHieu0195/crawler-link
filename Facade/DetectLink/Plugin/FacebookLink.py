@@ -103,9 +103,9 @@ class FacebookLink(ILink):
                 'updated_at': result['data']['updated_at']
             }
 
-            # screenshot = Selenium.get_instance().screen_post('fb', link_id)
-            # if screenshot:
-            #     item['screenshot'] = screenshot
+            screenshot = Selenium.get_instance().screen_post('fb', link_id)
+            if screenshot:
+                item['screenshot'] = screenshot
 
             res = self.mongodb.get_link_collection().update_one({
                 '_id': link['_id']
