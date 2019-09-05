@@ -31,7 +31,7 @@ if check:
         try:
             connection, client_address = s.accept()
             data = b''
-            connection.settimeout(2)
+            connection.settimeout(0.5)
             show_text('====== NEW TASK =======')
             try:
                 result = {"error": True, "msg": "Fail"}
