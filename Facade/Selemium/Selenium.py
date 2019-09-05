@@ -1,10 +1,8 @@
-
-from selenium import webdriver
-from selenium.webdriver.firefox.options import Options
-
 from Configs.enum import ServerConfig
 from CrawlerLib.show_notify import show_debug, show_warning
 from Facade.Selemium.FBPost import FBPost
+from Facade.Selemium.SeleniumBuilder import SeleniumBuilder
+from Facade.Selemium.builder.FirefoxBuilder import FirefoxBuilder
 from Facade.Selemium.InstagramPost import InstagramPost
 from Facade.Selemium.YoutubePost import YoutubePost
 
@@ -13,10 +11,7 @@ class Selenium:
     main_selenium = None
 
     def __init__(self):
-        options = Options()
-        options.add_argument('--headless')
-        options.add_argument('--no-sandbox')
-        self.driver = webdriver.Firefox(service_log_path='Log/selenium.log', options=options)
+        self.driver = SeleniumBuilder.build(ServerConfig.SELENIUM_TYPE.value)
         self.selenium_types = {
             'fb': FBPost(),
             'ins': InstagramPost(),

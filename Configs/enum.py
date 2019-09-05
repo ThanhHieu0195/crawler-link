@@ -15,3 +15,5 @@ class ServerConfig(Enum):
     API_YTB_KEY = os.getenv('API_YTB_KEY', None)
     TIME_OUT=15
     ENABLE_SCREENSHOT=True
+    SELENIUM_TYPE=os.getenv('SELENIUM_TYPE', 'firefox')
+    SELENIUM_CHROME_DRIVER_PATH=os.getenv('SELENIUM_CHROME_DRIVER_PATH', '/usr/local/bin/chromedriver')
