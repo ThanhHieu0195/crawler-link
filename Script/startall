@@ -1,0 +1,11 @@
+#!/bin/bash
+
+Script/serversocket &
+sleep 2
+Script/clientsocket -t fb -l fb-socket &
+sleep 2
+Script/clientsocket -t ins -l ins-socket &
+sleep 2
+Script/clientsocket -t ytb -l ins-socket &
+sleep 2
+Script/servercommand -p 8080 &
