@@ -3,7 +3,7 @@ from CrawlerLib.helper import get_sys_params, get_master_attr, print_header_log
 from CrawlerLib.server import create_server
 import socket
 import json
-
+import re
 from CrawlerLib.servercommand_helper import detect_json, process_save_data_link, send_http_json_result, \
     process_download_attachment, send_http_result, get_query_params
 from CrawlerLib.show_notify import show_text, show_warning, show_notify, show_debug
@@ -36,12 +36,15 @@ if check:
                 result = {"error": True, "msg": "Fail"}
                 while True:
                     try:
-                        data += connection.recv(1024)
+                        msg = connection.recv(1024)
+                        data += msg
+                        matches = re.findall(r'\r\n\r\n$', msg.decode())
+                        if len(matches) > 0:
+                            break
                     except socket.error:
                         break
                 sjson = detect_json(data.decode())
                 query_params = get_query_params(data.decode())
-
                 if query_params and query_params[1] == 'attachments':
                     show_debug('Process download attachment ...')
                     result = process_download_attachment(query_params[2])
