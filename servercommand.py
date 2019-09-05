@@ -7,6 +7,7 @@ import re
 from CrawlerLib.servercommand_helper import detect_json, process_save_data_link, send_http_json_result, \
     process_download_attachment, send_http_result, get_query_params
 from CrawlerLib.show_notify import show_text, show_warning, show_notify, show_debug
+import time
 
 print_header_log()
 
@@ -30,18 +31,23 @@ if check:
         try:
             connection, client_address = s.accept()
             data = b''
-            connection.settimeout(1.5)
+            connection.settimeout(2)
             show_text('====== NEW TASK =======')
             try:
                 result = {"error": True, "msg": "Fail"}
                 while True:
                     try:
                         msg = connection.recv(1024)
+                        if not msg:
+                            break
                         data += msg
                         matches = re.findall(r'\r\n\r\n$', msg.decode())
                         if len(matches) > 0:
                             break
                     except socket.error:
+                        break
+                    except Exception as e:
+                        print(e)
                         break
                 sjson = detect_json(data.decode())
                 query_params = get_query_params(data.decode())
@@ -62,7 +68,7 @@ if check:
                     send_http_json_result(connection, result)
             except Exception as e:
                 show_warning(format(e))
-                result['msg'] = format(e)
+                result = {"error": True, "msg": format(e)}
                 send_http_json_result(connection, result)
             connection.close()
         except socket.error as err:
