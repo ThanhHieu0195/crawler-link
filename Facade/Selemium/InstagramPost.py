@@ -14,8 +14,8 @@ class InstagramPost(IBase):
                 """)
         time.sleep(1)
         png = selenium.driver.get_screenshot_as_png()
-        im = Image.open(BytesIO(png))        selenium.driver.quit()
-
+        im = Image.open(BytesIO(png))
         png_name = '%s-%s' % (get_utc_time('%Y%m%d%H%M'), post_id)
         im.save('Screenshot/%s.png' % png_name)
+        selenium.driver.quit()
         return png_name
