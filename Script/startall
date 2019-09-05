@@ -1,5 +1,4 @@
 #!/bin/bash
-
 Script/serversocket &
 sleep 2
 Script/clientsocket -t fb -l fb-socket &

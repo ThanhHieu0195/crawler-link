@@ -1,0 +1,10 @@
+#!/bin/bash
+app=$(echo $(dpkg -l | grep multitail| awk '{print $2}'))
+len=$(expr length "$app")
+if [ $len = 0 ]
+then
+    sudo apt-get install multitail
+fi
+
+multitail $(ls Log/*.log)
+
