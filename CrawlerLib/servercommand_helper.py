@@ -71,7 +71,7 @@ def process_save_data_link(data):
 def send_http_result(response, result):
     msg = result
     response_headers = {
-        'Content-Type': 'image',
+        'Content-Type': 'image/png',
         'Content-Length': len(msg),
         'Connection': 'close',
     }
@@ -83,7 +83,14 @@ def send_http_result(response, result):
     response.send(r.encode())
     response.send(response_headers_raw.encode())
     response.send(b'\r\n')  # to separate headers from body
-    response.send(msg)
+    msg_max = len(msg)
+    start = 0
+    end = 1024
+    while msg_max >= start:
+        response.send(msg[start:end])
+        start = end
+        end += 1024
+        
 
 
 def send_http_json_result(response, result):
