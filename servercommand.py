@@ -5,7 +5,7 @@ import socket
 import json
 import re
 from CrawlerLib.servercommand_helper import detect_json, process_save_data_link, send_http_json_result, \
-    process_download_attachment, send_http_result, get_query_params
+    process_download_attachment, send_http_result, get_query_params, process_take_info_link
 from CrawlerLib.show_notify import show_text, show_warning, show_notify, show_debug
 import time
 
@@ -51,11 +51,17 @@ if check:
                         break
                 sjson = detect_json(data.decode())
                 query_params = get_query_params(data.decode())
-                if query_params and query_params[1] == 'attachments':
-                    show_debug('Process download attachment ...')
-                    result = process_download_attachment(query_params[2])
-                    show_notify('Result')
-                    send_http_result(connection, result)
+                if query_params:
+                    if query_params[1] == 'attachments':
+                        show_debug('Process download attachment ...')
+                        result = process_download_attachment(query_params[2])
+                        show_notify('Result')
+                        send_http_result(connection, result)
+                    if query_params[1] == 'links':
+                        show_debug('Process take info links')
+                        result = process_take_info_link(query_params[2])
+                        send_http_json_result(connection, result)
+
                 elif sjson:
                     data = json.loads(sjson)
                     show_debug('Body request')

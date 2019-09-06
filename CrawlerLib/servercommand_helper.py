@@ -38,6 +38,15 @@ def process_save_data_link(data):
         else:
             item['deadline'] = datetime.datetime.utcnow()
 
+        # format deadline start
+        matches = re.findall(r'(\d{4})(\d{2})(\d{2})', get_master_attr('camp_start', item, ''))
+        if len(matches) > 0:
+            item['camp_start'] = datetime.datetime(int(matches[0][0]), int(matches[0][1]), int(matches[0][2]))
+        else:
+            item['camp_start'] = datetime.datetime.utcnow()
+
+
+
         # format timeline
         timeline = get_master_attr('timeline', item, [])
         if len(timeline) > 0:
@@ -52,7 +61,7 @@ def process_save_data_link(data):
         item['timeline'] = timeline
         item['created_at'] = datetime.datetime.utcnow()
         item['updated_at'] = datetime.datetime.utcnow()
-        item['deadline'] = datetime.datetime.utcnow()
+        # item['deadline'] = datetime.datetime.utcnow()
         item['status'] = 1
         item['hook_url'] = hook_url
         arr.append(item)
@@ -117,3 +126,9 @@ def get_query_params(data):
         path = matches[0]
         return path.split('/')
     return None
+
+def process_take_info_link(link_id):
+    result = {"error": True, "msg": "Fail"}
+    mongodb = MongodbClient.get_instance()
+    link_collection = mongodb.get_link_collection()
+    return link_collection.find_one({"link_id": link_id})
