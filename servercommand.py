@@ -51,7 +51,7 @@ if check:
                         break
                 sjson = detect_json(data.decode())
                 query_params = get_query_params(data.decode())
-                if query_params:
+                if query_params and query_params[0]:
                     if query_params[1] == 'attachments':
                         show_debug('Process download attachment ...')
                         result = process_download_attachment(query_params[2])

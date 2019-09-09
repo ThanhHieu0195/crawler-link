@@ -43,9 +43,7 @@ def process_save_data_link(data):
         if len(matches) > 0:
             item['camp_start'] = datetime.datetime(int(matches[0][0]), int(matches[0][1]), int(matches[0][2]))
         else:
-            item['camp_start'] = datetime.datetime.utcnow()
-
-
+            item['camp_start'] = datetime.datetime(datetime.datetime.utcnow().year, datetime.datetime.utcnow().month, datetime.datetime.utcnow().day)
 
         # format timeline
         timeline = get_master_attr('timeline', item, [])

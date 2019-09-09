@@ -31,6 +31,7 @@ def process_result_callback(link_id):
             'views': get_master_attr('views', link, None),
             'post_created_time': get_master_attr('post_created_time', link, None),
             'type': get_master_attr('type', link, None),
+            'screenshot': get_master_attr('screenshot', link, None)
         }
         try:
             requests.post(hook_url, data)
@@ -49,8 +50,11 @@ def start_schedule():
     day = int(get_utc_time('%d'))
     condition = {
         "status": 1,
+        "camp_start": {
+            "$lte": datetime.datetime(year, month, day)
+       },
         "deadline": {
-            "$gt": datetime.datetime(year, month, day)
+            "$gte": datetime.datetime(year, month, day)
         },
         "timeline": '%s:00' % get_utc_time('%H')
     }
