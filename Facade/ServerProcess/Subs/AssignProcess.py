@@ -6,6 +6,7 @@ from CrawlerLib.socketjson import _send, _recev
 from Facade.DetectLink.DetectLink import DetectLink
 from Facade.ServerProcess.Subs.ISubProcess import ISubProcess
 import socket as socket_lib
+from CrawlerLib.mail import send_mail
 
 
 class AssignProcess(ISubProcess):
@@ -81,9 +82,9 @@ class AssignProcess(ISubProcess):
         if data is not None:
             if proxy:
                 data['params']['proxy'] = proxy['proxy']
-
             if client is None:
                 result['msg'] = 'Client empty with task %s' % data['params']['link_id']
+                send_mail(ServerConfig.ADMIN_EMAIL.value, 'CLIENT EMTPY', '<strong>type: '+data['params']['type']+'</strong>')
                 return result
 
             _send(client['cnn'], data)

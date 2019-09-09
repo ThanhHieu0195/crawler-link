@@ -17,3 +17,5 @@ class ServerConfig(Enum):
     ENABLE_SCREENSHOT=bool(os.getenv('ENABLE_SCREENSHOT', None))
     SELENIUM_TYPE=os.getenv('SELENIUM_TYPE', 'firefox')
     SELENIUM_CHROME_DRIVER_PATH=os.getenv('SELENIUM_CHROME_DRIVER_PATH', '/usr/local/bin/chromedriver')
+    SENDGRID_KEY=os.getenv('SENDGRID_KEY', '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')
+    ADMIN_EMAIL=os.getenv('ADMIN_EMAIL', 'thanhhieu0195@gmail.com')
