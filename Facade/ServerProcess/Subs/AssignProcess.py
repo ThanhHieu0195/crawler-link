@@ -96,7 +96,7 @@ class AssignProcess(ISubProcess):
         return result
 
     def __get_client(self, params):
-        clients = self.main.clients[params['type']]
+        clients = get_master_attr(params['type'], self.main.clients, [])
         client = get_master_option(clients)
         if client:
             while client is not None and AssignProcess.check_client(client['cnn']) is False:
