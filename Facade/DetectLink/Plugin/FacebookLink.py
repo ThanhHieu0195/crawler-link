@@ -7,7 +7,6 @@ from CrawlerLib.show_notify import show_debug, show_warning
 from Facade.DetectLink.Plugin.ILink import ILink
 import requests
 import datetime
-
 from Facade.Selemium.Selenium import Selenium
 
 
@@ -34,9 +33,10 @@ class FacebookLink(ILink):
             'ref': 'fb',
             'type': None
         }
-        url = 'https://graph.facebook.com/' + data[
-            'link_id'] + '?fields=reactions.summary(true),comments.summary(true),shares,likes&access_token=' + data[
-                  'token']
+
+        link_id = get_master_attr('link_id', data, '')
+        token = get_master_attr('token', data, '')
+        url = 'https://graph.facebook.com/' + link_id + '?fields=reactions.summary(true),comments.summary(true),shares,likes&access_token=' + token
         proxy = get_master_attr('proxy', data, None)
         s = requests.Session()
         if proxy:
@@ -64,7 +64,7 @@ class FacebookLink(ILink):
                     'likes': get_master_attr('likes.count', d, None),
                     'shares': get_master_attr('shares.count', d, None),
                     'comments': get_master_attr('comments.count', d, None),
-                    'reactions': get_master_attr('reactions.summary.toal_count', d, None),
+                    'reactions': get_master_attr('reactions.summary.total_count', d, None),
                     'created_time': get_master_attr('created_time', d, None),
                     'updated_at': str(datetime.datetime.utcnow())
                 }
@@ -160,7 +160,12 @@ class FacebookLink(ILink):
 
     def __get_token(self):
         self.__fetch_token()
-        return get_master_option(self.tokens)
+        token = get_master_option(self.tokens)
+        print('DEBUGGGGGGGGGGGGGG')
+        print(self.tokens)
+        if token is not None:
+            self._update_token(self.tokens)
+        return token
 
     def __remove_token(self, token):
         def filter_token(t):
