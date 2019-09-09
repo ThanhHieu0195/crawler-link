@@ -8,6 +8,8 @@ from Facade.DetectLink.Plugin.ILink import ILink
 import requests
 import datetime
 from Facade.Selemium.Selenium import Selenium
+from CrawlerLib.mail import send_mail
+from Configs.enum import ServerConfig
 
 
 class FacebookLink(ILink):
@@ -21,6 +23,8 @@ class FacebookLink(ILink):
     def format_request(self, data):
         token = self.__get_token()
         if token is None:
+            show_warning('All token expire')
+            send_mail(ServerConfig.ADMIN_EMAIL.value, 'ALL TOKEN EXPIRE', '<strong>Please check token enable in crawler</strong>')
             return None
         data['params']['token'] = token['key']
         return data
@@ -126,6 +130,7 @@ class FacebookLink(ILink):
             token = self.__get_token()
             if token is None:
                 show_warning('All token expire')
+                send_mail(ServerConfig.ADMIN_EMAIL.value, 'ALL TOKEN EXPIRE', '<strong>Please check token enable in crawler</strong>')
                 return None
             params['token'] = token['key']
             return {
@@ -161,8 +166,6 @@ class FacebookLink(ILink):
     def __get_token(self):
         self.__fetch_token()
         token = get_master_option(self.tokens)
-        print('DEBUGGGGGGGGGGGGGG')
-        print(self.tokens)
         if token is not None:
             self._update_token(self.tokens)
         return token
