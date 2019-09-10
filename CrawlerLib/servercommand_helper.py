@@ -118,10 +118,13 @@ def send_http_json_result(response, result):
 
 
 def get_info_request(data):
+    json_string = detect_json(data)
+    if json_string is None:
+        json_string = '{}'
     return {
         'query_params': get_query_params(data),
         'method': get_method(data),
-        'data': json.loads(detect_json(data))
+        'data': json.loads(json_string)
     }
 
 
@@ -148,3 +151,26 @@ def process_take_info_link(link_id):
     else:
         link = link_collection.find_one({"link_id": link_id})
     return link
+
+
+def process_update_link(link_id, data):
+    allow_keys = ['link_id', 'status', 'type']
+    mongodb = MongodbClient.get_instance()
+    link_collection = mongodb.get_link_collection()
+    link = link_collection.find_one({'link_id': link_id})
+    params = {}
+    if link:
+        for key in allow_keys:
+            value = get_master_attr(key, data, None)
+            if value is not None:
+                params[key] = value
+
+        return link_collection.update({'_id': link['_id']}, {"$set": params})
+
+    return None
+
+
+def process_delete_link(link_id):
+    mongodb = MongodbClient.get_instance()
+    link_collection = mongodb.get_link_collection()
+    return link_collection.delete_one({'link_id': link_id})
