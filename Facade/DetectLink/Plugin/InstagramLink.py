@@ -19,7 +19,7 @@ class InstagramLink(ILink):
 
     @staticmethod
     def get_name():
-        return 'ins'
+        return 'IG'
 
     def format_request(self, data):
         return data
@@ -29,7 +29,7 @@ class InstagramLink(ILink):
             'error': True,
             'msg': None,
             'data': None,
-            'ref': 'ins'
+            'ref': 'IG'
         }
         url = 'https://www.instagram.com/p/' + data[
             'link_id']
@@ -88,7 +88,7 @@ class InstagramLink(ILink):
             }
 
             # screenshot
-            screenshot = Selenium.get_instance().screen_post('ins', result['data']['link_id'])
+            screenshot = Selenium.get_instance().screen_post('IG', result['data']['link_id'])
             if screenshot:
                 item['screenshot'] = screenshot
 

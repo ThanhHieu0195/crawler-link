@@ -19,7 +19,7 @@ class YoutubeLink(ILink):
 
     @staticmethod
     def get_name():
-        return 'ytb'
+        return 'YT'
 
     def format_request(self, data):
         return data
@@ -93,7 +93,7 @@ class YoutubeLink(ILink):
             }
 
             # screenshot
-            screenshot = Selenium.get_instance().screen_post('ytb', result['data']['link_id'])
+            screenshot = Selenium.get_instance().screen_post('YT', result['data']['link_id'])
             if screenshot:
                 item['screenshot'] = screenshot
 

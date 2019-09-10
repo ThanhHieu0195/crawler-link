@@ -15,7 +15,7 @@ def job(data):
 
 # job({
 #     'link_id': 'j8U06veqxdU',
-#     'type': 'ytb'
+#     'type': 'YT'
 # })
 # if data_tasks.count() > 0:
 #     for i in range(0, data_tasks.count()):
@@ -25,15 +25,15 @@ def job(data):
 #             'type': o['type']
 #         })
 
-# job({'type': 'ytb', 'link_id': 'j8U06veqxdU'})
-# job({'type': 'ins', 'link_id': 'BqkRJwMFtMb'})
-# job({'type': 'ins', 'link_id': 'BqkRJwMFtMb'})
-# job({'type': 'ins', 'link_id': 'BqkRJwMFtMb'})
-# job({'type': 'ins', 'link_id': 'BqkRJwMFtMb'})
-# job({'type': 'ins', 'link_id': 'BqkRJwMFtMb'})
-# job({'type': 'ins', 'link_id': 'BcNyJJLAGOe'})
-# job({'type': 'ytb', 'link_id': 'j8U06veqxdU'})
-# job({'type': 'ytb', 'link_id': 'j8U06veqxdU'})
-job({'type': 'ytb', 'link_id': '0RH0Xf3Iw5g'})
+# job({'type': 'YT', 'link_id': 'j8U06veqxdU'})
+# job({'type': 'IG', 'link_id': 'BqkRJwMFtMb'})
+# job({'type': 'IG', 'link_id': 'BqkRJwMFtMb'})
+# job({'type': 'IG', 'link_id': 'BqkRJwMFtMb'})
+# job({'type': 'IG', 'link_id': 'BqkRJwMFtMb'})
+# job({'type': 'IG', 'link_id': 'BqkRJwMFtMb'})
+# job({'type': 'IG', 'link_id': 'BcNyJJLAGOe'})
+# job({'type': 'YT', 'link_id': 'j8U06veqxdU'})
+# job({'type': 'YT', 'link_id': 'j8U06veqxdU'})
+job({'type': 'YT', 'link_id': '0RH0Xf3Iw5g'})
 
-# job({'type': 'fb', 'link_id': '100003803082906_1486305034839585'})
+# job({'type': 'FB', 'link_id': '100003803082906_1486305034839585'})

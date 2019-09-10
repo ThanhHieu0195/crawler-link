@@ -13,9 +13,9 @@ class Selenium:
     def __init__(self):
         self.driver = SeleniumBuilder.build(ServerConfig.SELENIUM_TYPE.value)
         self.selenium_types = {
-            'fb': FBPost(),
-            'ins': InstagramPost(),
-            'ytb': YoutubePost()
+            'FB': FBPost(),
+            'IG': InstagramPost(),
+            'YT': YoutubePost()
         }
 
     @staticmethod

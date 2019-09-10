@@ -18,7 +18,7 @@ class FacebookLink(ILink):
 
     @staticmethod
     def get_name():
-        return 'fb'
+        return 'FB'
 
     def format_request(self, data):
         token = self.__get_token()
@@ -34,7 +34,7 @@ class FacebookLink(ILink):
             'error': True,
             'msg': None,
             'data': None,
-            'ref': 'fb',
+            'ref': 'FB',
             'type': None
         }
 
@@ -107,7 +107,7 @@ class FacebookLink(ILink):
                 'updated_at': result['data']['updated_at']
             }
 
-            screenshot = Selenium.get_instance().screen_post('fb', link_id)
+            screenshot = Selenium.get_instance().screen_post('FB', link_id)
             if screenshot:
                 item['screenshot'] = screenshot
 
