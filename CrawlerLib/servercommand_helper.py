@@ -75,10 +75,10 @@ def process_save_data_link(data):
     return result
 
 
-def send_http_result(response, result):
+def send_http_result(response, result, content_type='text/html'):
     msg = result
     response_headers = {
-        'Content-Type': 'image/png',
+        'Content-Type': content_type,
         'Content-Length': len(msg),
         'Connection': 'close',
     }
@@ -99,9 +99,8 @@ def send_http_result(response, result):
         end += 1024
         
 
-
 def send_http_json_result(response, result):
-    msg = json.dumps(result)
+    msg = json.dumps(result, default=str)
     response_headers = {
         'Content-Type': 'application/json; encoding=utf8',
         'Content-Length': len(msg),
@@ -118,6 +117,17 @@ def send_http_json_result(response, result):
     response.send(msg.encode(encoding="utf-8"))
 
 
+def get_info_request(data):
+    json_string = detect_json(data)
+    if json_string is None:
+        json_string = '{}'
+    return {
+        'query_params': get_query_params(data),
+        'method': get_method(data),
+        'data': json.loads(json_string)
+    }
+
+
 def get_query_params(data):
     matches = re.findall(r'^[a-zA-Z]+ (.*) ', data)
     if len(matches):
@@ -125,8 +135,42 @@ def get_query_params(data):
         return path.split('/')
     return None
 
+
+def get_method(data):
+    matches = re.findall(r'^[a-zA-Z]+', data)
+    if len(matches):
+        return matches[0]
+    return None
+
+
 def process_take_info_link(link_id):
-    result = {"error": True, "msg": "Fail"}
     mongodb = MongodbClient.get_instance()
     link_collection = mongodb.get_link_collection()
-    return link_collection.find_one({"link_id": link_id})
+    if link_id is None:
+        link = list(link_collection.find())
+    else:
+        link = link_collection.find_one({"link_id": link_id})
+    return link
+
+
+def process_update_link(link_id, data):
+    allow_keys = ['link_id', 'status', 'type']
+    mongodb = MongodbClient.get_instance()
+    link_collection = mongodb.get_link_collection()
+    link = link_collection.find_one({'link_id': link_id})
+    params = {}
+    if link:
+        for key in allow_keys:
+            value = get_master_attr(key, data, None)
+            if value is not None:
+                params[key] = value
+
+        return link_collection.update({'_id': link['_id']}, {"$set": params})
+
+    return None
+
+
+def process_delete_link(link_id):
+    mongodb = MongodbClient.get_instance()
+    link_collection = mongodb.get_link_collection()
+    return link_collection.delete_one({'link_id': link_id})

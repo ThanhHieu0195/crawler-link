@@ -1,6 +1,10 @@
 #!/bin/bash
-arr=$(ls Log/*)
+arr=$(ls Log/*.log)
+folder_backup=$(date -u +%Y%m%d-%H:%M:%S)
+mkdir Log/$folder_backup
 for file in $arr
 do
-	echo '' > $file
+  filename=$(echo $file|sed 's/Log\///g')
+  mv $file Log/$folder_backup/$filename
+	echo '[PREV -> Log/'$folder_backup'/'$filename']' > $file
 done

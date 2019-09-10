@@ -4,10 +4,10 @@ from CrawlerLib.server import create_server
 import socket
 import json
 import re
-from CrawlerLib.servercommand_helper import detect_json, process_save_data_link, send_http_json_result, \
-    process_download_attachment, send_http_result, get_query_params, process_take_info_link
+from CrawlerLib.servercommand_helper import process_save_data_link, send_http_json_result, \
+    process_download_attachment, send_http_result, process_take_info_link, get_info_request, process_update_link, \
+    process_delete_link
 from CrawlerLib.show_notify import show_text, show_warning, show_notify, show_debug
-import time
 
 print_header_log()
 
@@ -25,58 +25,108 @@ if num_client is None:
 port = int(port)
 num_client = int(num_client)
 
-if check:
-    s = create_server(ServerConfig.IP_ADDRESS.value, port, num_client)
-    while True:
-        try:
-            connection, client_address = s.accept()
-            data = b''
-            connection.settimeout(0.5)
-            show_text('====== NEW TASK =======')
+
+class ServerCommand:
+    result = {"error": True, "msg": "", "data": None}
+
+    def listen(self):
+        s = create_server(ServerConfig.IP_ADDRESS.value, port, num_client)
+        while True:
             try:
-                result = {"error": True, "msg": "Fail"}
-                while True:
-                    try:
-                        msg = connection.recv(1024)
-                        if not msg:
+                connection, client_address = s.accept()
+                data = b''
+                connection.settimeout(0.5)
+                show_text('====== NEW TASK =======')
+                try:
+                    while True:
+                        try:
+                            msg = connection.recv(1024)
+                            if not msg:
+                                break
+                            data += msg
+                            matches = re.findall(r'\r\n\r\n$', msg.decode())
+                            if len(matches) > 0:
+                                break
+                        except socket.error:
                             break
-                        data += msg
-                        matches = re.findall(r'\r\n\r\n$', msg.decode())
-                        if len(matches) > 0:
+                        except Exception as e:
+                            print(e)
                             break
-                    except socket.error:
-                        break
-                    except Exception as e:
-                        print(e)
-                        break
-                sjson = detect_json(data.decode())
-                query_params = get_query_params(data.decode())
-                if query_params and query_params[0]:
-                    if query_params[1] == 'attachments':
-                        show_debug('Process download attachment ...')
-                        result = process_download_attachment(query_params[2])
-                        show_notify('Result')
-                        send_http_result(connection, result)
-                    if query_params[1] == 'links':
-                        show_debug('Process take info links')
-                        result = process_take_info_link(query_params[2])
-                        send_http_json_result(connection, result)
+                    request_info = get_info_request(data.decode())
+                    action = get_master_attr('query_params.1', request_info, None)
 
-                elif sjson:
-                    data = json.loads(sjson)
-                    show_debug('Body request')
-                    print(sjson)
+                    # process main action
+                    if action == 'attachments':
+                        self.process_attachment(connection)
 
-                    show_debug('Process save data link ...')
-                    result = process_save_data_link(data)
-                    show_notify('Result')
-                    print(result)
+                    if action == 'links':
+                        self.process_links(connection, request_info)
+
+                except Exception as e:
+                    show_warning(format(e))
+                    result = {"error": True, "msg": format(e)}
                     send_http_json_result(connection, result)
-            except Exception as e:
-                show_warning(format(e))
-                result = {"error": True, "msg": format(e)}
-                send_http_json_result(connection, result)
-            connection.close()
-        except socket.error as err:
-            print(err)
+                connection.close()
+            except socket.error as err:
+                print(err)
 
+    def init_result(self):
+        self.result = {"error": True, "msg": "",  "data": None}
+
+    def process_attachment(self, connection, request_info):
+        show_debug('Process download attachment ...')
+        self.init_result()
+        if request_info['query_params'][2] is not None:
+            self.result = process_download_attachment(request_info['query_params'][2])
+            show_notify('Result')
+            send_http_result(connection, self.result, content_type='image/png')
+        else:
+            print(1)
+
+    def process_links(self, connection, request_info):
+        self.init_result()
+        method = request_info['method']
+        if method == 'GET':
+            self.result['error'] = False
+            link_id = get_master_attr('query_params.2', request_info, None)
+            self.result['data'] = process_take_info_link(link_id)
+            send_http_json_result(connection, self.result)
+
+        if method == 'POST':
+            # process insert data
+            show_debug('Insert link data')
+            data = request_info['data']
+            show_debug('data body')
+            print(data)
+            show_debug('Processing save data ...')
+            self.result = process_save_data_link(data)
+            show_notify('Success!')
+            print(self.result)
+            send_http_json_result(connection, self.result)
+
+        if method == 'PUT':
+            link_id = get_master_attr('query_params.2', request_info, None)
+            show_debug('Edit link data: %s' % link_id)
+            data = request_info['data']
+            print(data)
+            show_debug('Processing ... ')
+            if link_id:
+                result = process_update_link(link_id, data)
+                if result:
+                    self.result['msg'] = 'Updated'
+                self.result['error'] = False
+            send_http_json_result(connection, self.result)
+
+        if method == 'DELETE':
+            link_id = get_master_attr('query_params.2', request_info, None)
+            show_debug('DELETE link data: %s' % link_id)
+            show_debug('Processing ... ')
+            if link_id:
+                if process_delete_link(link_id):
+                    self.result['msg'] = 'Deleted'
+                self.result['error'] = False
+            send_http_json_result(connection, self.result)
+
+if check:
+    servercommand = ServerCommand()
+    servercommand.listen()

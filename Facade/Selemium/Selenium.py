@@ -2,7 +2,6 @@ from Configs.enum import ServerConfig
 from CrawlerLib.show_notify import show_debug, show_warning
 from Facade.Selemium.FBPost import FBPost
 from Facade.Selemium.SeleniumBuilder import SeleniumBuilder
-from Facade.Selemium.builder.FirefoxBuilder import FirefoxBuilder
 from Facade.Selemium.InstagramPost import InstagramPost
 from Facade.Selemium.YoutubePost import YoutubePost
 
@@ -31,5 +30,3 @@ class Selenium:
             except Exception as e:
                 show_warning(format(e))
         return None
-
-
