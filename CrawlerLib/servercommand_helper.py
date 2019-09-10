@@ -75,10 +75,10 @@ def process_save_data_link(data):
     return result
 
 
-def send_http_result(response, result):
+def send_http_result(response, result, content_type='text/html'):
     msg = result
     response_headers = {
-        'Content-Type': 'image/png',
+        'Content-Type': content_type,
         'Content-Length': len(msg),
         'Connection': 'close',
     }

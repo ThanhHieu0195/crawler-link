@@ -55,10 +55,13 @@ class ServerCommand:
                     request_info = get_info_request(data.decode())
                     action = get_master_attr('query_params.1', request_info, None)
 
+                    # process main action
                     if action == 'attachments':
                         self.process_attachment(connection)
-                    elif action == 'links':
+
+                    if action == 'links':
                         self.process_links(connection, request_info)
+
                 except Exception as e:
                     show_warning(format(e))
                     result = {"error": True, "msg": format(e)}
@@ -76,7 +79,7 @@ class ServerCommand:
         if request_info['query_params'][2] is not None:
             self.result = process_download_attachment(request_info['query_params'][2])
             show_notify('Result')
-            send_http_result(connection, self.result)
+            send_http_result(connection, self.result, content_type='image/png')
         else:
             print(1)
 
