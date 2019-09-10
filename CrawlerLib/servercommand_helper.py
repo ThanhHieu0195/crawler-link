@@ -99,9 +99,8 @@ def send_http_result(response, result):
         end += 1024
         
 
-
 def send_http_json_result(response, result):
-    msg = json.dumps(result)
+    msg = json.dumps(result, default=str)
     response_headers = {
         'Content-Type': 'application/json; encoding=utf8',
         'Content-Length': len(msg),
@@ -122,7 +121,7 @@ def get_info_request(data):
     return {
         'query_params': get_query_params(data),
         'method': get_method(data),
-        'data': detect_json(data)
+        'data': json.loads(detect_json(data))
     }
 
 
@@ -142,7 +141,10 @@ def get_method(data):
 
 
 def process_take_info_link(link_id):
-    result = {"error": True, "msg": "Fail"}
     mongodb = MongodbClient.get_instance()
     link_collection = mongodb.get_link_collection()
-    return link_collection.find_one({"link_id": link_id})
+    if link_id is None:
+        link = list(link_collection.find())
+    else:
+        link = link_collection.find_one({"link_id": link_id})
+    return link
