@@ -5,7 +5,7 @@ import socket
 import json
 import re
 from CrawlerLib.servercommand_helper import detect_json, process_save_data_link, send_http_json_result, \
-    process_download_attachment, send_http_result, get_query_params, process_take_info_link
+    process_download_attachment, send_http_result, get_query_params, process_take_info_link, get_info_request
 from CrawlerLib.show_notify import show_text, show_warning, show_notify, show_debug
 import time
 
@@ -49,29 +49,30 @@ if check:
                     except Exception as e:
                         print(e)
                         break
-                sjson = detect_json(data.decode())
-                query_params = get_query_params(data.decode())
-                if query_params and query_params[0]:
-                    if query_params[1] == 'attachments':
+                request_info = get_info_request(data.decode())
+                if len(request_info['query_params']) >= 2 and request_info['query_params'][1] != '':
+                    if request_info['query_params'][1] == 'attachments':
                         show_debug('Process download attachment ...')
-                        result = process_download_attachment(query_params[2])
-                        show_notify('Result')
-                        send_http_result(connection, result)
-                    if query_params[1] == 'links':
-                        show_debug('Process take info links')
-                        result = process_take_info_link(query_params[2])
-                        send_http_json_result(connection, result)
+                        if request_info['query_params'][2] is not None:
+                            result = process_download_attachment(request_info['query_params'][2])
+                            show_notify('Result')
+                            send_http_result(connection, result)
 
-                elif sjson:
-                    data = json.loads(sjson)
-                    show_debug('Body request')
-                    print(sjson)
-
-                    show_debug('Process save data link ...')
-                    result = process_save_data_link(data)
-                    show_notify('Result')
-                    print(result)
-                    send_http_json_result(connection, result)
+                    if request_info['query_params'][1] == 'links':
+                        if request_info['method'] == 'GET':
+                            show_debug('Process take info links')
+                            print(request_info['query_params'][2])
+                            result = process_take_info_link(request_info['query_params'][2])
+                            send_http_json_result(connection, result)
+                        else:
+                            data = json.loads(request_info['data'])
+                            show_debug('Body request')
+                            print(request_info['data'])
+                            show_debug('Process save data link ...')
+                            result = process_save_data_link(data)
+                            show_notify('Result')
+                            print(result)
+                            send_http_json_result(connection, result)
             except Exception as e:
                 show_warning(format(e))
                 result = {"error": True, "msg": format(e)}

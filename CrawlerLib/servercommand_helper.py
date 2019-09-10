@@ -118,12 +118,28 @@ def send_http_json_result(response, result):
     response.send(msg.encode(encoding="utf-8"))
 
 
+def get_info_request(data):
+    return {
+        'query_params': get_query_params(data),
+        'method': get_method(data),
+        'data': detect_json(data)
+    }
+
+
 def get_query_params(data):
     matches = re.findall(r'^[a-zA-Z]+ (.*) ', data)
     if len(matches):
         path = matches[0]
         return path.split('/')
     return None
+
+
+def get_method(data):
+    matches = re.findall(r'^[a-zA-Z]+', data)
+    if len(matches):
+        return matches[0]
+    return None
+
 
 def process_take_info_link(link_id):
     result = {"error": True, "msg": "Fail"}
