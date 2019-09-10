@@ -19,3 +19,4 @@ class ServerConfig(Enum):
     SELENIUM_CHROME_DRIVER_PATH=os.getenv('SELENIUM_CHROME_DRIVER_PATH', '/usr/local/bin/chromedriver')
     SENDGRID_KEY=os.getenv('SENDGRID_KEY', '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')
     ADMIN_EMAIL=os.getenv('ADMIN_EMAIL', 'thanhhieu0195@gmail.com')
+

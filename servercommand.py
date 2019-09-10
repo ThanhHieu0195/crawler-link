@@ -57,7 +57,7 @@ class ServerCommand:
 
                     # process main action
                     if action == 'attachments':
-                        self.process_attachment(connection)
+                        self.process_attachment(connection, request_info)
 
                     if action == 'links':
                         self.process_links(connection, request_info)

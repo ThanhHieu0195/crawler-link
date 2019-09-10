@@ -1,9 +1,9 @@
 from Configs.enum import ServerConfig
 from CrawlerLib.show_notify import show_debug, show_warning
-from Facade.Selemium.FBPost import FBPost
 from Facade.Selemium.SeleniumBuilder import SeleniumBuilder
 from Facade.Selemium.InstagramPost import InstagramPost
 from Facade.Selemium.YoutubePost import YoutubePost
+from Facade.Selemium.FBPost import FBPost
 
 
 class Selenium:

@@ -1,37 +1,37 @@
-from CrawlerLib.helper import get_utc_time
 from Facade.Selemium.IBase import IBase
 from PIL import Image
 from io import BytesIO
-import time
-from selenium import webdriver
 
 
 class FBPost(IBase):
     def screen_post(self, _selenium, post_id):
         _selenium.driver.get('https://www.facebook.com/%s' % post_id)
         _selenium.driver.maximize_window()
-        _selenium.driver.execute_script("""
-                document.getElementById('headerArea').remove();
-                document.getElementById('pagelet_bluebar').remove();
-                window.scrollTo(0, document.body.scrollHeight);
-                document.getElementsByTagName('body')[0].style['marginBottom'] = "0px";
-                return screen.height;
+        size = _selenium.driver.execute_script("""
+                let height = 1080;
+                let width = 800;
+                if (document.getElementById('headerArea')) document.getElementById('headerArea').remove();
+                if (document.getElementById('pagelet_bluebar')) document.getElementById('pagelet_bluebar').remove();
+                if (document.getElementsByTagName('body').length > 0) document.getElementsByTagName('body')[0].style['marginBottom'] = "0px";
+                if (document.getElementById('contentArea')) {
+                    height = document.getElementById('contentArea').offsetHeight;
+                    width = document.getElementById('contentArea').offsetWidth;
+                }
+                return {
+                    height: height,
+                    width: width
+                };
                 """)
+        print('Size: w%s - h%s' % (size['width'], size['height']))
+        _selenium.driver.set_window_size(size['width'] + 100, size['height'])
 
-        e = _selenium.driver.find_element_by_id('contentArea')
-        location = e.location
-        size = e.size
+        _selenium.driver.execute_script("""
+                if (document.getElementById('contentArea')) document.getElementById('contentArea').scrollIntoView();
+        """)
 
         png = _selenium.driver.get_screenshot_as_png()
         im = Image.open(BytesIO(png))
-
-        left = location['x']
-        top = 0
-        right = location['x'] + size['width']
-
-        im = im.crop((left, top, right, im.height))
-
-        png_name = '%s-%s' % (get_utc_time('%Y%m%d%H%M'), post_id)
+        png_name = 'FB-%s' % post_id
         im.save('Screenshot/%s.png' % png_name)
         _selenium.driver.quit()
         return png_name
