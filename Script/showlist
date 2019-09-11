@@ -1,2 +1,2 @@
 #!/bin/bash
-ps -aux|grep python3.5|awk '{print $2"-"$13}'
+ps -aux|grep python3.5|awk '{print $13"-"$14}'

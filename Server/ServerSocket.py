@@ -9,9 +9,9 @@ class ServerSocket:
     def __init__(self):
         self.server = create_server(ServerConfig.IP_ADDRESS.value, ServerConfig.PORT.value, ServerConfig.NUM_CLIENT.value)
         self.clients = {
-            "fb": [],
-            "ins": [],
-            "ytb": []
+            "FB": [],
+            "IN": [],
+            "YT": []
         }
         self.serverProcess = ServerProcess.get_instance()
 
