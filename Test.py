@@ -4,11 +4,11 @@ from Configs.enum import ServerConfig
 host_path = ServerConfig.IP_ADDRESS.value
 port = '8080'
 
-# Selenium.get_instance().screen_post('YT', '0RH0Xf3Iw5g')
-# Selenium.get_instance().screen_post('YT', 'Nk-isYXzUsg')
+Selenium.get_instance().screen_post('YT', '0RH0Xf3Iw5g')
+Selenium.get_instance().screen_post('YT', 'Nk-isYXzUsg')
 
-Selenium.get_instance().screen_post('IG', 'BcNyJJLAGOe')
-Selenium.get_instance().screen_post('IG', 'B2QTaIpJpfe')
+#Selenium.get_instance().screen_post('IG', 'BcNyJJLAGOe')
+#Selenium.get_instance().screen_post('IG', 'B2QTaIpJpfe')
 # print('http://188.166.220.11:8080/attachments/%s' % png_name)
 #
 #
