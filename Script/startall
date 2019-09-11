@@ -3,7 +3,7 @@ Script/serversocket &
 sleep 2
 Script/clientsocket -t FB -l fb-socket &
 sleep 2
-Script/clientsocket -t IN -l ins-socket &
+Script/clientsocket -t IG -l ins-socket &
 sleep 2
 Script/clientsocket -t YT -l ins-socket &
 sleep 2

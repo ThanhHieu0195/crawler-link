@@ -10,7 +10,7 @@ class ServerSocket:
         self.server = create_server(ServerConfig.IP_ADDRESS.value, ServerConfig.PORT.value, ServerConfig.NUM_CLIENT.value)
         self.clients = {
             "FB": [],
-            "IN": [],
+            "IG": [],
             "YT": []
         }
         self.serverProcess = ServerProcess.get_instance()

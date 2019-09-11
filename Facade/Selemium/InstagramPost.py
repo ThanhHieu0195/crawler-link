@@ -19,7 +19,7 @@ class InstagramPost(IBase):
         png = selenium.driver.get_screenshot_as_png()
         
         im = Image.open(BytesIO(png))
-        png_name = 'IN-%s' % post_id
+        png_name = 'IG-%s' % post_id
 
         self.crop_img(im, png_name, size)
         selenium.driver.quit()

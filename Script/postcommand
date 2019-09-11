@@ -19,6 +19,6 @@ fi
 d="20190912"
 s="20190911"
 
-data='{"body":[{"link_id": "0RH0Xf3Iw5g", "type": "YT", "timeline": ["07:10", "08:00"], "deadline": "'$d'"},{"link_id": "BcNyJJLAGOe", "type": "IN", "timeline": ["07:00", "08:00"], "deadline": "'$d'"}],"hook_url": "http://dev.api.callback/callback-api/", "camp_start": "'$s'"}'
+data='{"body":[{"link_id": "100003803082906_1526300914173330", "type": "FB", "timeline": ["07:10", "08:00"], "deadline": "'$d'"},{"link_id": "0RH0Xf3Iw5g", "type": "YT", "timeline": ["07:10", "08:00"], "deadline": "'$d'"},{"link_id": "BcNyJJLAGOe", "type": "IG", "timeline": ["07:00", "08:00"], "deadline": "'$d'"}],"hook_url": "http://dev.api.callback/callback-api/", "camp_start": "'$s'"}'
 
 curl -X POST http://localhost:$port/links -H "Content-Type: application/json" -d "$data"

@@ -25,7 +25,7 @@ class InitDatabaseCommand(ICommand):
                         "required": ["link_id", "type"],
                         "properties": {
                             "type": {
-                                "enum": ["FB", "IN", "YT"],
+                                "enum": ["FB", "IG", "YT"],
                                 "description": "can only be one of enum values [FB, IN, YT] and is required"
                                 },
                             "link_id": {
