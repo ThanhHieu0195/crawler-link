@@ -22,7 +22,7 @@ class YoutubePost(IBase):
                 """)
         png = selenium.driver.get_screenshot_as_png()
         im = Image.open(BytesIO(png))
-        png_name = '%s' % post_id
+        png_name = 'YT-%s' % post_id
 
         self.crop_img(im, png_name, size)
 #        selenium.driver.quit()
