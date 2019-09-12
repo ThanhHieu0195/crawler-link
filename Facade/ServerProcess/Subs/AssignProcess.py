@@ -24,12 +24,14 @@ class AssignProcess(ISubProcess):
         self.__process_data_result_task(result)
         while True:
             data = _recev(connection)
+            if not data:
+               break
+
             if 'action' in data and data['action'] == 'assign':
                 result = self.__task_assign(data['params'])
                 self.__process_data_result_task(result)
                 _send(connection, {"action": "notify", "type": "success", "ref": "assign"})
             else:
-                print(connection)
                 _send(connection, {"action": "notify", "type": "fail", "ref": "assign"})
 
     def process_response(self, client, proxy, data, response):
