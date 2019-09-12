@@ -1,8 +1,9 @@
 from Configs.enum import ServerConfig
-from CrawlerLib.server import create_server, get_master_option
-from CrawlerLib.show_notify import show_warning, show_notify, show_debug
+from CrawlerLib.server import create_server
+from CrawlerLib.show_notify import show_warning
 from CrawlerLib.socketjson import _recev, _send
 from Facade.ServerProcess.ServerProcess import ServerProcess
+import threading
 
 
 class ServerSocket:
@@ -19,12 +20,16 @@ class ServerSocket:
         while True:
             try:
                 connection, client_address = self.server.accept()
-                data = _recev(connection)
-                result = self.serverProcess.process_sub(client_address, connection, self.clients, data)
-                if result == -1:
-                    _send(connection, {"action": "notify", "type": "fail", "ref": "undefined"})
+                x = threading.Thread(target=self.subscribe, args=(connection, client_address), daemon=True)
+                x.start()
             except BrokenPipeError:
                 pass
             except Exception as e:
                 show_warning('ERROR')
                 print(format(e))
+
+    def subscribe(self, connection, client_address):
+        data = _recev(connection)
+        result = self.serverProcess.process_sub(client_address, connection, self.clients, data)
+        if result == -1:
+            _send(connection, {"action": "notify", "type": "fail", "ref": "undefined"})

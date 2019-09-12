@@ -8,10 +8,7 @@ class SubscribeProcess(ISubProcess):
     def get_name():
         return 'subscribe'
 
-    def process_sub(self, main, data):
-        client_address = main.client_address
-        connection = main.connection
-
+    def process_sub(self, main, connection, client_address, data):
         show_notify(client_address[0] + " was subscribed with type " + data['type'])
         is_add = True
         if len(main.clients[data['type']]) > 0:

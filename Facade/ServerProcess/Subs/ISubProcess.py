@@ -8,5 +8,5 @@ class ISubProcess(ABC):
         pass
 
     @abstractmethod
-    def process_sub(self, main, data):
+    def process_sub(self, main, connection, client_address, data):
         pass

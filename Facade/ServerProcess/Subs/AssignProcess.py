@@ -17,9 +17,8 @@ class AssignProcess(ISubProcess):
     def get_name():
         return 'assign'
 
-    def process_sub(self, main, data):
+    def process_sub(self, main, connection, client_address, data):
         self.main = main
-        connection = main.connection
         result = self.__task_assign(data['params'])
         _send(connection, {"action": "notify", "type": "success", "ref": "assign"})
         self.__process_data_result_task(result)
@@ -30,6 +29,7 @@ class AssignProcess(ISubProcess):
                 self.__process_data_result_task(result)
                 _send(connection, {"action": "notify", "type": "success", "ref": "assign"})
             else:
+                print(connection)
                 _send(connection, {"action": "notify", "type": "fail", "ref": "assign"})
 
     def process_response(self, client, proxy, data, response):

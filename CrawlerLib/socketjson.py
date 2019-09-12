@@ -10,7 +10,7 @@ def _send(s, data):
         msg = json.dumps(data).encode()
     except Exception as e:
         show_warning(format(e))
-        msg = ''
+        msg = b''
     s.send(msg)
 
 
@@ -19,6 +19,9 @@ def _recev(s, default={}):
     try:
         msg = s.recv(10240)
         data = json.loads(msg.decode())
+    except json.JSONDecodeError as e1:
+        print(e1)
+        data = {}
     except socket.error as e:
         show_warning(format(e))
     return data

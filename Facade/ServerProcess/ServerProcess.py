@@ -19,10 +19,7 @@ class ServerProcess:
 
     # define response
     def process_sub(self, client_address, connection, clients, data):
-        self.client_address = client_address
-        self.connection = connection
         self.clients = clients
-
         if 'action' in data and data['action'] in self.subs:
-            return self.subs[data['action']].process_sub(self, data)
+            return self.subs[data['action']].process_sub(self, connection, client_address, data)
         return -1

@@ -24,7 +24,7 @@ class FBPost(IBase):
         png_name = 'FB-%s' % post_id
 
         self.crop_img(im, png_name, size)
-        _selenium.driver.quit()
+        # _selenium.driver.quit()
         return png_name
 
     def crop_img(self, im, im_name, size):

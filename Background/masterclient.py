@@ -13,4 +13,5 @@ def assign_task(data):
         "action": "assign",
         "params": data
     })
-    _recev(master_client)
+    result = _recev(master_client)
+    print(result)
