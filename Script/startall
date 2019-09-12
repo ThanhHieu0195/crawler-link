@@ -1,10 +1,12 @@
 #!/bin/bash
+port=$(( ( RANDOM % 10 )  + 1 ))$(( ( RANDOM % 10 )  + 1 ))$(( ( RANDOM % 10 )  + 1 ))$(( ( RANDOM % 10 )  + 1 ))
+sed -i 's/PORT=\([0-9]\+\)/PORT='$port'/g' .env
 Script/serversocket &
 sleep 2
 Script/clientsocket -t FB -l fb-socket &
 sleep 2
 Script/clientsocket -t IG -l ins-socket &
 sleep 2
-Script/clientsocket -t YT -l ins-socket &
+Script/clientsocket -t YT -l yt-socket &
 sleep 2
 Script/servercommand -p 8080 &

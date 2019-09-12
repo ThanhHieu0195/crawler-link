@@ -3,3 +3,4 @@ requests
 pymongo
 selenium
 Pillow
+sendgrid

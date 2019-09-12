@@ -18,11 +18,11 @@ link_ytb = [
     'OLEDJGtxDLs',
     'IyhSUdLEh9g',
     'LLlQsn52Dkc',
-    '12FDmPuAr4I',
-    '3QM0SPSjMFI',
-    'xi1wK-aETw0',
-    'q1aqSgiFvyU',
-    '1WJm3WvZHM8'
+    # '12FDmPuAr4I',
+    # '3QM0SPSjMFI',
+    # 'xi1wK-aETw0',
+    # 'q1aqSgiFvyU',
+    # '1WJm3WvZHM8'
 ]
 
 
