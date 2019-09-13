@@ -49,6 +49,9 @@ def get_data_hook(link_id, link):
 
 def process_result_callback(link_id):
     link = client.get_link_collection().find_one({"link_id": link_id})
+    if not link:
+        print('Not found link')
+        return None
     hook_url = get_master_attr('hook_url', link, None)
     if hook_url:
         data = get_data_hook(link_id, link)
