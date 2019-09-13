@@ -1,11 +1,13 @@
 import threading
 from Configs.enum import ServerConfig
 from CrawlerLib.Pymongo import MongodbClient
+from CrawlerLib.helper import get_master_attr
 from CrawlerLib.show_notify import show_debug, show_warning
 from Facade.Selemium.SeleniumBuilder import SeleniumBuilder
 from Facade.Selemium.InstagramPost import InstagramPost
 from Facade.Selemium.YoutubePost import YoutubePost
 from Facade.Selemium.FBPost import FBPost
+import requests
 
 
 class Selenium:
@@ -45,6 +47,14 @@ class Selenium:
                 MongodbClient.get_instance().get_link_collection().update_one({'_id': link['_id']}, {
                     '$set': data
                 })
+
+                data = {
+                    'link_id': get_master_attr('link_id', link, None),
+                    'type': get_master_attr('type', link, None),
+                    'screenshot': get_master_attr('screenshot', link, None)
+                }
+                hook_url = link['hook_url']
+                result = requests.post(hook_url, data)
             else:
                 show_debug('NOT FOUND LINK')
         except Exception as e:
