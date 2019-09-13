@@ -7,7 +7,7 @@ from Facade.DetectLink.DetectLink import DetectLink
 from Facade.ServerProcess.Subs.ISubProcess import ISubProcess
 import socket as socket_lib
 from CrawlerLib.mail import send_mail
-
+import threading
 
 class AssignProcess(ISubProcess):
     def __init__(self):
@@ -25,14 +25,18 @@ class AssignProcess(ISubProcess):
         while True:
             data = _recev(connection)
             if not data:
-               break
+                break
+            x = threading.Thread(target=self.process_thread_assign, args=(connection, data))
+            x.start()
+            # self.process_thread_assign(connection, data)
 
-            if 'action' in data and data['action'] == 'assign':
-                result = self.__task_assign(data['params'])
-                self.__process_data_result_task(result)
-                _send(connection, {"action": "notify", "type": "success", "ref": "assign"})
-            else:
-                _send(connection, {"action": "notify", "type": "fail", "ref": "assign"})
+    def process_thread_assign(self, connection, data):
+        if 'action' in data and data['action'] == 'assign':
+            result = self.__task_assign(data['params'])
+            self.__process_data_result_task(result)
+            _send(connection, {"action": "notify", "type": "success", "ref": "assign"})
+        else:
+            _send(connection, {"action": "notify", "type": "fail", "ref": "assign"})
 
     def process_response(self, client, proxy, data, response):
         if response and get_master_attr('error', response, False) == False:

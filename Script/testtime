@@ -1,0 +1,23 @@
+!#/bin/bash
+usage() { echo "Usage: $0 [-f <filename>]" 1>&2; exit 1; }
+
+while getopts ":f:" o; do
+    case "${o}" in
+        f)
+            filename=${OPTARG}
+            ;;
+        *)
+            echo usage
+    esac
+done
+shift $((OPTIND-1))
+
+if [ -z "${filename}" ]; then
+    usage
+fi
+
+start=`date +%s`
+python3 $filename
+end=`date +%s`
+runtime=$((end-start))
+echo 'Total time test' $runtime

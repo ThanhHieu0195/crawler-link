@@ -5,8 +5,9 @@ from Background.masterclient import assign_task
 from Configs import constant
 from CrawlerLib.Pymongo import MongodbClient
 from CrawlerLib.helper import get_utc_time, get_master_attr
-from CrawlerLib.show_notify import show_text, show_warning, show_debug, show_notify
+from CrawlerLib.show_notify import show_warning, show_debug
 import requests
+import threading
 
 
 client = MongodbClient.get_instance()
@@ -88,6 +89,7 @@ def start_schedule():
     s = sched.scheduler(time.time, time.sleep)
 
     tasks = list(data_tasks)
+    data_crawler = []
     idx = 0
     for row in tasks:
         del row['_id']
@@ -95,9 +97,20 @@ def start_schedule():
             'link_id': row['link_id'],
             'type': row['type']
         }
-        s.enter(idx * 10, 1, job, (option,))
+        data_crawler.append(option)
         idx += 1
 
-    show_debug('%s task waiting exec' % len(tasks))
-    s.run()
-    show_notify('DONE')
+    show_debug('%s task waiting exec' % len(data_crawler))
+
+
+def process_list_job(arr):
+    for j in arr:
+        job(j)
+
+
+def process_crawler_thread(data):
+    x = threading.Thread(target=process_list_job, args=(data[0:int(len(data) / 2)],))
+    y = threading.Thread(target=process_list_job, args=(data[int(len(data) / 2):len(data)],))
+    x.start()
+    y.start()
+

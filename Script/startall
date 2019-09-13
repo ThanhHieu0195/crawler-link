@@ -1,8 +1,8 @@
 #!/bin/bash
 sudo kill -9 $(ps -aux | grep python3.5| awk '{print $2}');
-port=$(( ( RANDOM % 10 )  + 1 ))$(( ( RANDOM % 10 )  + 1 ))$(( ( RANDOM % 10 )  + 1 ))$(( ( RANDOM % 10 )  + 1 ))
+port=$(( ( RANDOM % 9 )  + 1 ))$(( ( RANDOM % 9 )  + 1 ))$(( ( RANDOM % 9 )  + 1 ))$(( ( RANDOM % 9 )  + 1 ))
 sed -i 's/PORT=\([0-9]\+\)/PORT='$port'/g' .env
-
+echo 'running port' $port
 Script/serversocket &
 sleep 2
 Script/clientsocket -t FB -l fb-socket &

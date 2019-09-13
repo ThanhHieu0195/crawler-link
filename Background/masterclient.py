@@ -14,4 +14,5 @@ def assign_task(data):
         "params": data
     })
     result = _recev(master_client)
+    print('show info response ...')
     print(result)
