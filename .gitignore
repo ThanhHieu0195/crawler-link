@@ -6,6 +6,7 @@ __pycache__
 debug-tool
 Log
 Screenshot/
-Configs/*
+Configs/facebooktoken
+Configs/proxies
 test-*
 tags

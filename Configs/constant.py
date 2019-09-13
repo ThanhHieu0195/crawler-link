@@ -1,0 +1,3 @@
+TYPE_FB = 'FB'
+TYPE_INS = 'IG'
+TYPE_YTB = 'YT'
