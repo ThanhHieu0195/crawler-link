@@ -6,5 +6,6 @@ __pycache__
 debug-tool
 Log
 Screenshot/
-Configs/
-.env
+Configs/*
+test-*
+tags

@@ -1,6 +1,4 @@
 #!/bin/bash
-# Script/changeport;
-sudo kill -9 $(ps -aux | grep python3.5| awk '{print $2}');
 echo -e "WELCOME TO CRAWLER LINK BOT"
 echo -e "Server is runnning \e[0m...\e[0m"
 echo -e "Run command view log server \"\e[1mtail -f Log/serversocket.log\e[0m\""
