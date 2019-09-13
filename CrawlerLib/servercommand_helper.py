@@ -23,13 +23,12 @@ def process_download_attachment(attachment_name):
 
 
 def process_save_data_link(data):
-    result = {"error": True, "msg": "Fail"}
+    result = {"error": False, "msg": "Completed", 'data': []}
     mongodb = MongodbClient.get_instance()
     link_collection = mongodb.get_link_collection()
 
     items = get_master_attr('body', data, [])
     hook_url = get_master_attr('hook_url', data, None)
-    arr = []
     for item in items:
         # format deadline
         matches = re.findall(r'(\d{4})(\d{2})(\d{2})', item['deadline'])
@@ -43,7 +42,8 @@ def process_save_data_link(data):
         if len(matches) > 0:
             item['camp_start'] = datetime.datetime(int(matches[0][0]), int(matches[0][1]), int(matches[0][2]))
         else:
-            item['camp_start'] = datetime.datetime(datetime.datetime.utcnow().year, datetime.datetime.utcnow().month, datetime.datetime.utcnow().day)
+            item['camp_start'] = datetime.datetime(datetime.datetime.utcnow().year, datetime.datetime.utcnow().month,
+                                                   datetime.datetime.utcnow().day)
 
         # format timeline
         timeline = get_master_attr('timeline', item, [])
@@ -62,16 +62,29 @@ def process_save_data_link(data):
         # item['deadline'] = datetime.datetime.utcnow()
         item['status'] = 1
         item['hook_url'] = hook_url
-        arr.append(item)
-    try:
-        data_result = link_collection.insert_many(arr)
-    except pymongo.errors.DuplicateKeyError as e:
-        result['msg'] = format(e)
-    except Exception as e:
-        result['msg'] = format(e)
-    else:
-        result['error'] = False
-        result['msg'] = len(list(data_result.inserted_ids))
+        try:
+            result['data'].append({
+                'msg': 'Success',
+                'error': False,
+                'link_id': item['link_id']
+            })
+            link_collection.insert(item)
+        except pymongo.errors.DuplicateKeyError as e:
+            del item['_id']
+            link_collection.update({
+                'link_id': item['link_id']
+            }, {'$set': item})
+            result['data'].append({
+                'msg': 'Replace',
+                'error': False,
+                'link_id': item['link_id']
+            })
+        except Exception as e:
+            result['data'].append({
+                'msg': format(e),
+                'error': True,
+                'link_id': item['link_id']
+            })
     return result
 
 
@@ -97,7 +110,7 @@ def send_http_result(response, result, content_type='text/html'):
         response.send(msg[start:end])
         start = end
         end += 1024
-        
+
 
 def send_http_json_result(response, result):
     msg = json.dumps(result, default=str)
