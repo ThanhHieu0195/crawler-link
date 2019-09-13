@@ -7,4 +7,5 @@ debug-tool
 Log
 Screenshot/
 Configs/
-.env
+test-*
+tags

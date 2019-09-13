@@ -14,8 +14,8 @@ class FBPost(IBase):
                 if (document.getElementById('pagelet_bluebar')) document.getElementById('pagelet_bluebar').remove();
                 if (document.getElementsByTagName('body').length > 0) document.getElementsByTagName('body')[0].style['marginBottom'] = "0px";
                 if (document.getElementById('rightCol')) document.getElementById('rightCol').remove();
-                if (document.getElementById('contentArea')) {
-                    return document.getElementById('contentArea').getBoundingClientRect();
+                if (document.getElementsByClassName('userContentWrapper').length > 0) {
+                    return document.getElementsByClassName('userContentWrapper')[0].getBoundingClientRect();
                 }
                 return null;
                 """)
