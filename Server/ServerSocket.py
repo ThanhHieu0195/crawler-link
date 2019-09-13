@@ -18,18 +18,17 @@ class ServerSocket:
 
     def listen(self):
         while True:
+            connection, client_address = self.server.accept()
             try:
-                connection, client_address = self.server.accept()
                 x = threading.Thread(target=self.subscribe, args=(connection, client_address), daemon=True)
                 x.start()
             except BrokenPipeError:
                 pass
             except Exception as e:
+                print('code1122')
                 show_warning('ERROR')
                 print(format(e))
 
     def subscribe(self, connection, client_address):
         data = _recev(connection)
-        result = self.serverProcess.process_sub(client_address, connection, self.clients, data)
-        if result == -1:
-            _send(connection, {"action": "notify", "type": "fail", "ref": "undefined"})
+        self.serverProcess.process_sub(client_address, connection, self.clients, data)

@@ -101,6 +101,7 @@ def start_schedule():
         idx += 1
 
     show_debug('%s task waiting exec' % len(data_crawler))
+    process_crawler_thread(data_crawler)
 
 
 def process_list_job(arr):

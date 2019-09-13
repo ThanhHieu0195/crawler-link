@@ -25,24 +25,28 @@ class Selenium:
         return Selenium.main_selenium
 
     def screen_post(self, post_type, post_id):
-        if ServerConfig.ENABLE_SCREENSHOT.value and post_type in self.selenium_types:
-            x = threading.Thread(target=self.process_thread_screenshot, args=(post_type, post_id))
-            x.start()
-        return None
+            if ServerConfig.ENABLE_SCREENSHOT.value and post_type in self.selenium_types:
+                x = threading.Thread(target=self.process_thread_screenshot, args=(post_type, post_id))
+                x.start()
+            return None
+
 
     def process_thread_screenshot(self, post_type, post_id):
-        show_debug('Process take screenshot ...' + post_id)
-        link = MongodbClient.get_instance().get_link_collection().find_one({'link_id': post_id})
-        if link:
-            data = {
-                'processing_screenshot': 0
-            }
-            screenshot = self.selenium_types[post_type].screen_post(self, post_id)
-            if screenshot:
-                data['screenshot'] = screenshot
-            MongodbClient.get_instance().get_link_collection().update_one({'_id': link['_id']}, {
-                '$set': data
-            })
-        else:
-            show_debug('NOT FOUND LINK')
-
+        try:
+            # show_debug('Process take screenshot ...' + post_id)
+            link = MongodbClient.get_instance().get_link_collection().find_one({'link_id': post_id})
+            if link:
+                data = {
+                    'processing_screenshot': 0
+                }
+                screenshot = self.selenium_types[post_type].screen_post(self, post_id)
+                if screenshot:
+                    data['screenshot'] = screenshot
+                MongodbClient.get_instance().get_link_collection().update_one({'_id': link['_id']}, {
+                    '$set': data
+                })
+            else:
+                show_debug('NOT FOUND LINK')
+        except Exception as e:
+            print('error code: #117228')
+            print(format(e))

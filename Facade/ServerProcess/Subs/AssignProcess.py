@@ -17,26 +17,18 @@ class AssignProcess(ISubProcess):
     def get_name():
         return 'assign'
 
+    # main flow
     def process_sub(self, main, connection, client_address, data):
-        self.main = main
-        result = self.__task_assign(data['params'])
-        _send(connection, {"action": "notify", "type": "success", "ref": "assign"})
-        self.__process_data_result_task(result)
-        while True:
-            data = _recev(connection)
-            if not data:
-                break
-            x = threading.Thread(target=self.process_thread_assign, args=(connection, data))
-            x.start()
-            # self.process_thread_assign(connection, data)
-
-    def process_thread_assign(self, connection, data):
-        if 'action' in data and data['action'] == 'assign':
+        response_client = {"action": "notify", "type": "fail", "ref": "assign"}
+        try:
+            self.main = main
             result = self.__task_assign(data['params'])
+            response_client = {"action": "notify", "type": "success", "ref": "assign"}
             self.__process_data_result_task(result)
-            _send(connection, {"action": "notify", "type": "success", "ref": "assign"})
-        else:
-            _send(connection, {"action": "notify", "type": "fail", "ref": "assign"})
+        except Exception as e1:
+            print(e1, 'code2233')
+        _send(connection, response_client)
+        connection.close()
 
     def process_response(self, client, proxy, data, response):
         if response and get_master_attr('error', response, False) == False:

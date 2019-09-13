@@ -1,4 +1,4 @@
-!#/bin/bash
+#!/bin/bash
 usage() { echo "Usage: $0 [-f <filename>]" 1>&2; exit 1; }
 
 while getopts ":f:" o; do

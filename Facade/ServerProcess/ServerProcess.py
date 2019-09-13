@@ -5,7 +5,7 @@ from Facade.ServerProcess.Subs.SubscribeProcess import SubscribeProcess
 class ServerProcess:
     Main=None
 
-    def __init__(self ):
+    def __init__(self):
         self.subs = {
             AssignProcess.get_name(): AssignProcess(),
             SubscribeProcess.get_name(): SubscribeProcess()
@@ -21,5 +21,4 @@ class ServerProcess:
     def process_sub(self, client_address, connection, clients, data):
         self.clients = clients
         if 'action' in data and data['action'] in self.subs:
-            return self.subs[data['action']].process_sub(self, connection, client_address, data)
-        return -1
+            self.subs[data['action']].process_sub(self, connection, client_address, data)
