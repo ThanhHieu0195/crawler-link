@@ -9,6 +9,9 @@ from Facade.DetectLink.DetectLink import DetectLink
 
 class ClientSocket:
     def __init__(self):
+        self.createsocket()
+
+    def createsocket(self):
         client_type = ServerConfig.CLIENT_TYPE.value
         params = get_sys_params()
         if 'type' in params:
@@ -22,6 +25,9 @@ class ClientSocket:
         while True:
             try:
                 data = _recev(self.client)
+                if not data:
+                    show_warning('Not data')
+                    break
                 if "action" in data:
                     if data['action'] == 'notify' and data['ref'] == 'subscribed':
                         show_notify("subscribe was successfully")
@@ -38,6 +44,10 @@ class ClientSocket:
                         })
             except ConnectionError as err:
                 show_warning("OS error: {0}".format(err))
+            except Exception as err1:
+                show_warning("OS error: {0}".format(err1))
+                self.client.close()
+                break
 
     def do_assign(self, data):
         res = self.detectLinkProvider.process_request(data['type'], data)

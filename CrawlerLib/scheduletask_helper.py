@@ -62,7 +62,6 @@ def process_result_callback(link_id):
             show_warning(format(e1))
         except Exception as e:
             show_warning(format(e))
-
         show_debug('Hook request %s' % link_id)
         print(data)
 
@@ -107,6 +106,7 @@ def start_schedule():
 def process_list_job(arr):
     for j in arr:
         job(j)
+        time.sleep(1)
 
 
 def process_crawler_thread(data):

@@ -13,6 +13,6 @@ def send_mail(to, subject, content):
         sg = SendGridAPIClient(api_key)
         return sg.send(message)
     except Exception as e:
-        print(e.message)
+        print(e)
     return False
 

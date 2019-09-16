@@ -69,6 +69,7 @@ class AssignProcess(ISubProcess):
         proxy = self.__get_proxy()
         if proxy:
             params['proxy'] = proxy['proxy']
+
         data = self.detectLinkProvider.format_request(params['type'], {
             'action': 'assign',
             'params': params

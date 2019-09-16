@@ -28,6 +28,7 @@ class ServerSocket:
                 print('code1122')
                 show_warning('ERROR')
                 print(format(e))
+                connection.close()
 
     def subscribe(self, connection, client_address):
         data = _recev(connection)
