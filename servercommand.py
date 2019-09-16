@@ -1,5 +1,8 @@
+import threading
+
 from Configs.enum import ServerConfig
 from CrawlerLib.helper import get_sys_params, get_master_attr, print_header_log
+from CrawlerLib.scheduletask_helper import start_schedule, job
 from CrawlerLib.server import create_server
 import socket
 import json
@@ -62,6 +65,9 @@ class ServerCommand:
                     if action == 'links':
                         self.process_links(connection, request_info)
 
+                    if action == 'crawler-links':
+                        self.process_crawler_links(connection, request_info)
+
                 except Exception as e:
                     show_warning(format(e))
                     result = {"error": True, "msg": format(e)}
@@ -82,6 +88,39 @@ class ServerCommand:
             send_http_result(connection, self.result, content_type='image/png')
         else:
             print(1)
+
+    def process_crawler_links(self, connection, request_info):
+        self.init_result()
+        method = request_info['method']
+        if method == 'POST':
+            data = request_info['data']
+            crawler_type = get_master_attr('type', data, None)
+            if crawler_type == 'timeline':
+                print_header_log()
+                start_schedule()
+
+            if crawler_type == 'links':
+                def process_list_job(arr):
+                    for j in arr:
+                        job(j)
+
+                def process_jobs(link_social):
+                    print('Total link: ', len(link_social))
+                    x = threading.Thread(target=process_list_job, args=(link_social[0:int(len(link_social) / 2)],))
+                    y = threading.Thread(target=process_list_job,
+                                         args=(link_social[int(len(link_social) / 2):len(link_social)],))
+                    x.start()
+                    y.start()
+                    send_http_json_result(connection, {'error': False, 'msg': 'Success'})
+
+                links = get_master_attr('links', data, [])
+                crawlerparams = []
+                for link in links:
+                    l = process_take_info_link(link)
+                    if l is not None:
+                        crawlerparams.append({'link_id': l['link_id'], 'type': l['type']})
+                process_jobs(crawlerparams)
+                send_http_json_result(connection, {'error': False, 'msg': 'Success'})
 
     def process_links(self, connection, request_info):
         self.init_result()
