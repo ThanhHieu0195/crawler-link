@@ -1,3 +1,5 @@
+import math
+
 from CrawlerLib.helper import get_utc_time
 from Facade.Selemium.IBase import IBase
 from PIL import Image
@@ -34,5 +36,8 @@ class YoutubePost(IBase):
         if size is not None:  
             img_size = (int(size['x']), int(size['y']), int(size['x']) + int(size['width']), int(size['y']) + int(size['height']));  
             im = im.crop(img_size)
-        im.save('Screenshot/%s.png' % im_name)  
+        x, y = im.size
+        x2, y2 = math.floor(x/1.5), math.floor(y/1.5)
+        im = im.resize((x2, y2), Image.ANTIALIAS)
+        im.save('Screenshot/%s.png' % im_name, quality=50, optimize=True)
         return im_name

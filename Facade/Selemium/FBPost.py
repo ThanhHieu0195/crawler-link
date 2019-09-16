@@ -1,3 +1,5 @@
+import math
+
 from Facade.Selemium.IBase import IBase
 from PIL import Image
 from io import BytesIO
@@ -36,7 +38,10 @@ class FBPost(IBase):
             img_size = (int(size['x']), int(size['y']), int(size['x']) + int(size['width']), int(size['y']) + int(size['height']))
             # print(img_size)
             im = im.crop(img_size)
-        im.save('Screenshot/%s.png' % im_name)
+        x, y = im.size
+        x2, y2 = math.floor(x / 1.5), math.floor(y / 1.5)
+        im = im.resize((x2, y2), Image.ANTIALIAS)
+        im.save('Screenshot/%s.png' % im_name, optimize=True, quality=90)
         return im_name
 
 
